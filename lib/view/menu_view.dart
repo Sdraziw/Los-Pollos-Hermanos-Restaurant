@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_element, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
@@ -15,6 +15,7 @@ class _MenuViewState extends State<MenuView> {
   List<Prato> lista = [];
   int _selectedIndex = 0; // Índice do item selecionado no BottomNavigationBar
   String query = '';
+  Map<int, int> quantidade = {}; // Mapa para armazenar a quantidade de cada prato
 
   @override
   void initState() {
@@ -45,6 +46,20 @@ class _MenuViewState extends State<MenuView> {
     }
   }
 
+  void _adicionarItem(int index) {
+    setState(() {
+      quantidade[index] = (quantidade[index] ?? 0) + 1; // Adiciona 1 à quantidade
+    });
+  }
+
+  void _subtrairItem(int index) {
+    setState(() {
+      if (quantidade[index] != null && quantidade[index]! > 0) {
+        quantidade[index] = quantidade[index]! - 1; // Subtrai 1 da quantidade
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,14 +67,6 @@ class _MenuViewState extends State<MenuView> {
       appBar: AppBar(
         backgroundColor: Color(0xFFFFD600),
         title: Container(
-
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('lib/images/sand.jpeg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-
           height: 40,
           child: TextField(
             onChanged: (value) {
@@ -67,6 +74,17 @@ class _MenuViewState extends State<MenuView> {
                 query = value; // Atualiza a query conforme o usuário digita
               });
             },
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.search),
+              hintText: 'Pesquisar...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0), // Arredondar a barra de pesquisa
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            ),
           ),
         ),
       ),
@@ -84,62 +102,81 @@ class _MenuViewState extends State<MenuView> {
             return Card(
               margin: EdgeInsets.all(10), // Espaçamento entre os cards
               elevation: 5,
-              child: InkWell(
-                onTap: () {
-                  // Abrir a DetalhesView
-                  var pratoSelecionado = lista[index];
-                  Navigator.pushNamed(
-                    context,
-                    'detalhes',
-                    arguments: pratoSelecionado,
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      // Imagem
-                      Container(
-                        height: 100,
-                        width: 100, // Ajustado para um tamanho mais adequado
-                        child: ImageNetwork(
-                          image: prato.foto,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
+                  children: [
+                    Row(
+                      children: [
+                        // Imagem
+                        SizedBox(
                           height: 100,
-                          width: 100,
-                          fitWeb: BoxFitWeb.cover,
-                          onLoading: const CircularProgressIndicator(
-                            color: Colors.indigoAccent,
+                          width: 100, // Ajustado para um tamanho mais adequado
+                          child: ImageNetwork(
+                            image: prato.foto,
+                            height: 100,
+                            width: 100,
+                            fitWeb: BoxFitWeb.cover,
+                            onLoading: const CircularProgressIndicator(
+                              color: Colors.indigoAccent,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10), // Espaçamento entre imagem e texto
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
-                          children: [
-                            Text(
-                              prato.nome,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "${prato.descricao}\n${prato.preco}",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        SizedBox(width: 10), // Espaçamento entre imagem e texto
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                prato.nome,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${prato.descricao}\n${prato.preco}",
+                                style: TextStyle(fontSize: 16),
+                              ),
+
+                              SizedBox(height: 1),
+                              
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.remove),
+                                    onPressed: () => _subtrairItem(index),
+                                  ),
+
+                                  SizedBox(width: 10),
+
+                                  Text('${quantidade[index] ?? 0}', style: TextStyle(fontSize: 18)), // Mostra a quantidade
+                                  
+                                  SizedBox(width: 10),
+                                  
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () => _adicionarItem(index),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Icon(Icons.arrow_right), // Ícone à direita
-                    ],
-                  ),
+                      ],
+                    ),
+                    SizedBox(height: 0), // Espaço entre a descrição e os botões
+                    // Adiciona os botões de adição e subtração
+                    
+                  ],
                 ),
               ),
             );
           },
         ),
       ),
-       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFFFFD600),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xFFFFD600), // Cor da BottomAppBar
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
