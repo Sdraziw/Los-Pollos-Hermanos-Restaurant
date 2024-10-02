@@ -15,7 +15,6 @@ class _MenuViewState extends State<MenuView> {
   List<Prato> lista = [];
   int _selectedIndex = 0; // Índice do item selecionado no BottomNavigationBar
   String query = '';
-  Map<int, int> quantidade = {}; // Mapa para armazenar a quantidade de cada prato
 
   @override
   void initState() {
@@ -46,25 +45,12 @@ class _MenuViewState extends State<MenuView> {
     }
   }
 
-  void _adicionarItem(int index) {
-    setState(() {
-      quantidade[index] = (quantidade[index] ?? 0) + 1; // Adiciona 1 à quantidade
-    });
-  }
-
-  void _subtrairItem(int index) {
-    setState(() {
-      if (quantidade[index] != null && quantidade[index]! > 0) {
-        quantidade[index] = quantidade[index]! - 1; // Subtrai 1 da quantidade
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFD600),
+      backgroundColor: Colors.yellow,
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove o botão de voltar
         backgroundColor: Color(0xFFFFD600),
         title: Container(
           height: 40,
@@ -99,76 +85,63 @@ class _MenuViewState extends State<MenuView> {
             final prato = lista.where((prato) {
               return prato.nome.toLowerCase().contains(query.toLowerCase());
             }).toList()[index]; // Filtra a lista com a query
-            return Card(
-              margin: EdgeInsets.all(10), // Espaçamento entre os cards
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
-                  children: [
-                    Row(
-                      children: [
-                        // Imagem
-                        SizedBox(
-                          height: 100,
-                          width: 100, // Ajustado para um tamanho mais adequado
-                          child: ImageNetwork(
-                            image: prato.foto,
+            return InkWell(
+              onTap: () {
+                // Navegar para a tela de detalhes do prato
+                Navigator.pushNamed(
+                  context,
+                  'detalhes',
+                  arguments: prato, // Passar o prato selecionado como argumento
+                );
+              },
+              child: Card(
+                margin: EdgeInsets.all(10), // Espaçamento entre os cards
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
+                    children: [
+                      Row(
+                        children: [
+                          // Imagem
+                          SizedBox(
                             height: 100,
-                            width: 100,
-                            fitWeb: BoxFitWeb.cover,
-                            onLoading: const CircularProgressIndicator(
-                              color: Colors.indigoAccent,
+                            width: 100, // Ajustado para um tamanho mais adequado
+                            child: ImageNetwork(
+                              image: prato.foto,
+                              height: 100,
+                              width: 100,
+                              fitWeb: BoxFitWeb.cover,
+                              onLoading: const CircularProgressIndicator(
+                                color: Colors.indigoAccent,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10), // Espaçamento entre imagem e texto
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                prato.nome,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "${prato.descricao}\n${prato.preco}",
-                                style: TextStyle(fontSize: 16),
-                              ),
-
-                              SizedBox(height: 1),
-                              
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.remove),
-                                    onPressed: () => _subtrairItem(index),
-                                  ),
-
-                                  SizedBox(width: 10),
-
-                                  Text('${quantidade[index] ?? 0}', style: TextStyle(fontSize: 18)), // Mostra a quantidade
-                                  
-                                  SizedBox(width: 10),
-                                  
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () => _adicionarItem(index),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          SizedBox(width: 10), // Espaçamento entre imagem e texto
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  prato.nome,
+                                  style: TextStyle(
+                                      fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                Text(prato.resumo, style: TextStyle(fontSize: 16)),
+                                SizedBox(height: 10),
+                                Text(
+                                  prato.preco,
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 0), // Espaço entre a descrição e os botões
-                    // Adiciona os botões de adição e subtração
-                    
-                  ],
+                          Icon(Icons.play_arrow_rounded, size: 22), // Ícone triangular restaurado
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

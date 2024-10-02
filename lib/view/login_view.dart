@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preojeto/model/user_model.dart'; // Importa a classe Usuario
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -65,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Informe seu e-mail ou nome de usuário';
+                      return 'Informe seu e-mail ou usuário';
                     }
                     return null;
                   },
@@ -153,18 +154,35 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: () {
                     // Validação do formulário
                     if (formKey.currentState!.validate()) {
-                      String username = txtValor1.text;
-                      String password = txtValor2.text;
+                      String emailOuUsuario = txtValor1.text;
+                      String senha = txtValor2.text;
 
                       // Verifica se o login é do administrador (usuário: admin, senha: 123456)
-                      if (username == 'admin' && password == '123456') {
+                      if (emailOuUsuario == 'admin' && senha == '123456') {
                         // Redireciona para a tela de admin
                         Navigator.pushNamed(context, 'menu');
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Login ou senha inválidos')),
+                        // Verifica se o usuário existe no vetor
+                        Usuario? usuario = Usuario.usuarios.firstWhere(
+                          (user) =>
+                              (user.email == emailOuUsuario ||
+                                  user.nome == emailOuUsuario) &&
+                              user.senha == senha,
+                          orElse: () =>
+                              Usuario(nome: '', email: '', senha: ''), // Objeto vazio
                         );
+
+                        if (usuario.nome.isNotEmpty) {
+                          // Login bem-sucedido
+                          Navigator.pushNamed(context, 'menu');
+                        } else {
+                          // Login falhou
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Login ou senha inválidos'),
+                            ),
+                          );
+                        }
                       }
                     }
                   },

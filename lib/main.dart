@@ -1,7 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:preojeto/view/cadastro_view.dart';
-import 'package:preojeto/view/carrinho_view.dart';
+import 'package:preojeto/view/detalhes_view.dart';
 import 'package:preojeto/view/login_view.dart';
 import 'package:preojeto/view/menu_view.dart';
 

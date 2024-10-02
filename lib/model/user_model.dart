@@ -1,27 +1,25 @@
-class Usuario{
-  //Atributos
-  final String nome;
-  final String email;
-  final String senha;
+class Usuario {
+  String nome;
+  String email;
+  String senha;
 
-  //Construtor
-  Usuario (
-    this.nome,
-    this.email,
-    this.senha,
-  );
+  Usuario({required this.nome, required this.email, required this.senha});
 
-  //
-  //Método para geração de Contatos
-  //
-  static List<Usuario> listaUsuarios = [];
+  // Lista estática de usuários cadastrados
+  static List<Usuario> usuarios = [];
 
-    static void adicionarUser(String nome, String email, String senha) {
-      listaUsuarios.add(Usuario(nome, email, senha));
+  // Função para adicionar um novo usuário
+  static void adicionarUser(String nome, String email, String senha) {
+    usuarios.add(Usuario(nome: nome, email: email, senha: senha));
+  }
+
+  // Função para verificar se o login é válido
+  static Usuario? login(String email, String senha) {
+    for (var usuario in usuarios) {
+      if (usuario.email == email && usuario.senha == senha) {
+        return usuario;
+      }
     }
-
-    static List<Usuario> obterUsuarios() {
-      return listaUsuarios;
-    }
-
+    return null;
+  }
 }
