@@ -65,21 +65,21 @@ class Prato {
       'Balde de Frango G',
       'Frango marinado em especiarias, frito até a perfeição',
       'R\$ 15,50',
-      'lib/images/frango_g.jpg',
+      'lib/images/frango_balde.jpeg',
       '14 pedaços | 400g',
     ));
     lista.add(Prato(
       'X - White',
       'Peito de frango empanado, com queijo e molho especial',
       'R\$ 15,50',
-      'lib/images/x_white.jpg',
+      'lib/images/frango_white.jfif',
       '14 pedaços | 400g',
     ));
     lista.add(Prato(
       "X - Heisenberg",
       "Frango grelhado com especiarias e molho picante",
       'R\$ 13,50',
-      "lib/images/x_heisenberg.jpg",
+      "lib/images/los-polos-hermanos14.png",
       '12 pedaços | 350g',
     ));
     return lista;
@@ -108,7 +108,7 @@ class Prato {
       "Água c/gás",
       "Água mineral com gás, refrescante",
       'R\$ 3,00',
-      "lib/images/agua_gas.jpg",
+      "lib/images/agua-com-gas-500ml.jpg",
       '500ml',
     ));
     lista.add(Prato(
@@ -122,7 +122,7 @@ class Prato {
       "Suco Dell Valle",
       "Suco natural de frutas, refrescante e saudável",
       'R\$ 5,50',
-      "lib/images/suco.jpg",
+      "lib/images/suco_delvale.jpg",
       '350ml',
     ));
     return lista;
