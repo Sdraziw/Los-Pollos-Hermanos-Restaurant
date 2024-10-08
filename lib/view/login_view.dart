@@ -1,3 +1,10 @@
+/* RF001 Login / Logout
+●	A tela de login contém campos de e-mail, senha, logotipo e botões de "Entrar" e "Cadastrar".
+●	Validação correta de e-mail (formato) e campos vazios.
+●	O botão "Entrar" aciona o login, e "Cadastrar" navega para o cadastro de usuário.
+●	O logout redireciona para a tela de login, descartando dados.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart'; // Importa a classe Usuario
 
@@ -66,7 +73,11 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Informe seu e-mail ou usuário';
+                      return 'Por favor, insira seu e-mail ou usuário';
+                    } else if (!RegExp(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value) &&
+                        !Usuario.usuarios.any((user) => user.nome == value)) {
+                      return 'Formato de e-mail ou usuário inválido';
                     }
                     return null;
                   },
@@ -128,7 +139,7 @@ class _LoginViewState extends State<LoginView> {
                     TextButton(
                       onPressed: () {
                         // Redireciona para a tela de "Esqueci a senha"
-                        Navigator.pushNamed(context, 'senha');
+                        Navigator.pushNamed(context, 'esqueci_senha');
                       },
                       child: const Text(
                         "Esqueci a senha",
@@ -168,8 +179,8 @@ class _LoginViewState extends State<LoginView> {
                               (user.email == emailOuUsuario ||
                                   user.nome == emailOuUsuario) &&
                               user.senha == senha,
-                          orElse: () =>
-                              Usuario(nome: '', email: '', senha: ''), // Objeto vazio
+                          orElse: () => Usuario(
+                              nome: '', email: '', senha: ''), // Objeto vazio
                         );
 
                         if (usuario.nome.isNotEmpty) {
@@ -207,7 +218,7 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 10),
 
                 // Botão pequeno para ver itens sem login
-                TextButton(
+                /*TextButton(
                   onPressed: () {
                     // Redirecionar para a tela de itens sem login
                     Navigator.pushNamed(context, 'itens');
@@ -220,7 +231,7 @@ class _LoginViewState extends State<LoginView> {
                       decoration: TextDecoration.underline,
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -228,4 +239,9 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+}
+
+// Função para realizar logout (incluída no menu ou onde for apropriado)
+void logout(BuildContext context) {
+  Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
 }

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
-import '../model/pratos_model.dart';
+import '../model/itens_model.dart';
 
 class DetalhesView extends StatefulWidget {
   const DetalhesView({super.key});
@@ -66,7 +66,7 @@ class _DetalhesViewState extends State<DetalhesView> {
                 ),
                 subtitle: Text(
                   dados.preco, // Exibindo o preço em formato monetário
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
 
@@ -78,9 +78,20 @@ class _DetalhesViewState extends State<DetalhesView> {
                 ),
                 subtitle: Text(
                   dados.descricao,
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
+              ListTile(
+                title: Text(
+                  'Resumo',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  dados.resumo,
+                  style: TextStyle(fontSize: 10),
+                ),
+              ),
+
 
               SizedBox(height: 20),
 
@@ -127,16 +138,16 @@ class _DetalhesViewState extends State<DetalhesView> {
                   // Exibir um snackbar ou diálogo
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Adicionado ${quantidade} ${dados.nome}(s) ao pedido!'),
+                      content: Text('Adicionado $quantidade ${dados.nome}(s) ao pedido!'),
                     ),
                   );
                 },
-                child: Text('Adicionar ao Pedido'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFFFD600), // Cor do botão
                   padding: EdgeInsets.symmetric(vertical: 15),
                   textStyle: TextStyle(fontSize: 18),
                 ),
+                child: Text('Adicionar ao Pedido'),
               ),
             ],
           ),

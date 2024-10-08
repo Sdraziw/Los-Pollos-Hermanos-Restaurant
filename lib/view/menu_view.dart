@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_element, unused_field
+/* RF003 Visualização do Cardápio
+●	Exibição do cardápio de forma organizada.
+●	Divisão do cardápio em categorias.
+●	Apresentação dos itens de cada categoria
+*/
 
 import 'package:flutter/material.dart';
-import 'package:image_network/image_network.dart';
-import '../model/pratos_model.dart';
+import '../model/itens_model.dart';
 
 class MenuView extends StatefulWidget {
   const MenuView({super.key});
@@ -12,41 +15,40 @@ class MenuView extends StatefulWidget {
 }
 
 class _MenuViewState extends State<MenuView> {
-  List<Prato> lista = [];
-  int _selectedIndex = 0; // Índice do item selecionado no BottomNavigationBar
-  String query = '';
+  List<Prato> listaEntradas = [];
+  List<Prato> listaPratosPrincipais = [];
+  List<Prato> listaBebidas = [];
+  List<Prato> listaSobremesas = [];
+  String query = ''; // Termo de pesquisa
 
   @override
   void initState() {
-    // Preencher a lista com os Pratos
-    lista = Prato.gerarDados();
     super.initState();
+
+    // Preencher as listas com os Pratos organizados por categoria
+    listaEntradas = Prato.gerarEntradas();
+    listaPratosPrincipais = Prato.gerarPratosPrincipais();
+    listaBebidas = Prato.gerarBebidas();
+    listaSobremesas = Prato.gerarSobremesas();
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Atualiza o índice selecionado
-    });
-
-    // Navegar para outras telas
-    switch (index) {
-      case 0:
-        // Menu - já estamos nesta tela
-        break;
-      case 1:
-        Navigator.pushNamed(context, 'categorias'); // Navega para a tela de Categorias
-        break;
-      case 2:
-        Navigator.pushNamed(context, 'perfil'); // Navega para a tela de Perfil
-        break;
-      case 3:
-        Navigator.pushNamed(context, 'configuracoes'); // Navega para a tela de Configurações
-        break;
-    }
+  // Função para filtrar os itens com base na pesquisa
+  List<Prato> filtrarPratos(List<Prato> pratos, String query) {
+    return pratos.where((prato) {
+      final nomePratoLower = prato.nome.toLowerCase();
+      final searchLower = query.toLowerCase();
+      return nomePratoLower.contains(searchLower);
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Filtrar os itens com base na query de pesquisa
+    final entradasFiltradas = filtrarPratos(listaEntradas, query);
+    final pratosPrincipaisFiltrados = filtrarPratos(listaPratosPrincipais, query);
+    final bebidasFiltradas = filtrarPratos(listaBebidas, query);
+    final sobremesasFiltradas = filtrarPratos(listaSobremesas, query);
+
     return Scaffold(
       backgroundColor: Colors.yellow,
       appBar: AppBar(
@@ -76,115 +78,87 @@ class _MenuViewState extends State<MenuView> {
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView.builder(
-          // Filtrar a lista com base na query
-          itemCount: lista.where((prato) {
-            return prato.nome.toLowerCase().contains(query.toLowerCase());
-          }).length,
-          itemBuilder: (context, index) {
-            final prato = lista.where((prato) {
-              return prato.nome.toLowerCase().contains(query.toLowerCase());
-            }).toList()[index]; // Filtra a lista com a query
-            return InkWell(
-              onTap: () {
-                // Navegar para a tela de detalhes do prato
-                Navigator.pushNamed(
-                  context,
-                  'detalhes',
-                  arguments: prato, // Passar o prato selecionado como argumento
-                );
-              },
-              child: Card(
+        child: ListView(
+          children: [
+            // Entradas
+            if (entradasFiltradas.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Entradas', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
+              ...entradasFiltradas.map((prato) => Card(
                 margin: EdgeInsets.all(10), // Espaçamento entre os cards
                 elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
-                    children: [
-                      Row(
-                        children: [
-                          // Imagem
-                          SizedBox(
-                            height: 100,
-                            width: 100, // Ajustado para um tamanho mais adequado
-                            child: ImageNetwork(
-                              image: prato.foto,
-                              height: 100,
-                              width: 100,
-                              fitWeb: BoxFitWeb.cover,
-                              onLoading: const CircularProgressIndicator(
-                                color: Colors.indigoAccent,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10), // Espaçamento entre imagem e texto
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  prato.nome,
-                                  style: TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                                Text(prato.resumo, style: TextStyle(fontSize: 16)),
-                                SizedBox(height: 10),
-                                Text(
-                                  prato.preco,
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Icon(Icons.play_arrow_rounded, size: 22), // Ícone triangular restaurado
-                        ],
-                      ),
-                    ],
-                  ),
+                child: ListTile(
+                  leading: Image.network(prato.foto, width: 50, height: 50),
+                  title: Text(prato.nome),
+                  subtitle: Text(prato.preco),
+                  onTap: () {
+                    Navigator.pushNamed(context, 'detalhes', arguments: prato);
+                  },
                 ),
+              )).toList(),
+            ],
+
+            // Pratos Principais
+            if (pratosPrincipaisFiltrados.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Pratos Principais', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               ),
-            );
-          },
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xFFFFD600), // Cor da BottomAppBar
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 0; // Altere o índice conforme necessário
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.category),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 1;
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 2;
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = 3;
-                });
-              },
-            ),
+              ...pratosPrincipaisFiltrados.map((prato) => Card(
+                margin: EdgeInsets.all(10),
+                elevation: 5,
+                child: ListTile(
+                  leading: Image.network(prato.foto, width: 50, height: 50),
+                  title: Text(prato.nome),
+                  subtitle: Text(prato.preco),
+                  onTap: () {
+                    Navigator.pushNamed(context, 'detalhes', arguments: prato);
+                  },
+                ),
+              )).toList(),
+            ],
+
+            // Bebidas
+            if (bebidasFiltradas.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Bebidas', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
+              ...bebidasFiltradas.map((prato) => Card(
+                margin: EdgeInsets.all(10),
+                elevation: 5,
+                child: ListTile(
+                  leading: Image.network(prato.foto, width: 50, height: 50),
+                  title: Text(prato.nome),
+                  subtitle: Text(prato.preco),
+                  onTap: () {
+                    Navigator.pushNamed(context, 'detalhes', arguments: prato);
+                  },
+                ),
+              )).toList(),
+            ],
+
+            // Sobremesas
+            if (sobremesasFiltradas.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Sobremesas', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
+              ...sobremesasFiltradas.map((prato) => Card(
+                margin: EdgeInsets.all(10),
+                elevation: 5,
+                child: ListTile(
+                  leading: Image.network(prato.foto, width: 50, height: 50),
+                  title: Text(prato.nome),
+                  subtitle: Text(prato.preco),
+                  onTap: () {
+                    Navigator.pushNamed(context, 'detalhes', arguments: prato);
+                  },
+                ),
+              )).toList(),
+            ],
           ],
         ),
       ),

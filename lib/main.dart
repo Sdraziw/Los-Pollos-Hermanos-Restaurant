@@ -1,9 +1,15 @@
+/* Arquivo principal do projeto
+*/
+
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:preojeto/view/cadastro_view.dart';
 import 'package:preojeto/view/detalhes_view.dart';
+import 'package:preojeto/view/esqueci_senha_view.dart';
 import 'package:preojeto/view/login_view.dart';
 import 'package:preojeto/view/menu_view.dart';
+import 'package:preojeto/view/categoria_view.dart';
+import 'package:preojeto/view/pedidos_view.dart';
 
 void main() {
   runApp(
@@ -24,6 +30,9 @@ class MainApp extends StatelessWidget {
         'cadastro': (context) => const CadastroView(),
         'menu': (context) => const MenuView(),
         'detalhes': (context) => const DetalhesView(),
+        'categoria': (context) => const CategoriaView(),
+        'esqueci_senha': (context) => EsqueciSenhaView(),
+        'pedidos': (context) => PedidosView(pedidos: []),
       },
     );
   }

@@ -1,4 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+/* RF002 Cadastro de Usuário
+●	Cadastro de usuário possui todos os campos necessários
+●	Validação correta de nome,  e-mail, senha e confirmação de senha.
+*/
+
 
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart';
@@ -116,7 +120,9 @@ class _CadastroViewState extends State<CadastroView> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty || value != txtEmail.text) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value != txtEmail.text) {
                       return 'Os e-mails não correspondem';
                     }
                     return null;
@@ -149,7 +155,9 @@ class _CadastroViewState extends State<CadastroView> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Informe uma senha';
+                      return 'Por favor, insira sua senha';
+                    } else if (value.length < 6) {
+                      return 'A senha precisa ter pelo menos 6 caracteres';
                     }
                     return null;
                   },
@@ -180,7 +188,9 @@ class _CadastroViewState extends State<CadastroView> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty || value != txtSenha.text) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value != txtSenha.text) {
                       return 'As senhas não correspondem';
                     }
                     return null;
