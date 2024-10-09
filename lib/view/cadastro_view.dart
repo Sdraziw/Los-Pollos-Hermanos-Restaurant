@@ -3,7 +3,6 @@
 ●	Validação correta de nome,  e-mail, senha e confirmação de senha.
 */
 
-
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart';
 
@@ -88,23 +87,26 @@ class _CadastroViewState extends State<CadastroView> {
 
                 // E-mail
                 TextFormField(
-                  controller: txtEmail,
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'E-mail',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    controller: txtEmail,
+                    style: const TextStyle(fontSize: 18),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'E-mail',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe seu e-mail';
-                    }
-                    return null;
-                  },
-                ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe seu e-mail';
+                      } else if (!RegExp(
+                              r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                        return 'Formato de e-mail inválido';
+                      }
+                      return null;
+                    }),
                 SizedBox(height: 20),
 
                 // Confirmar e-mail

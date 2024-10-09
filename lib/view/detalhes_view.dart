@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
+import 'package:get_it/get_it.dart';
 import '../model/itens_model.dart';
+import '../services/pedido_service.dart';
+import 'pedidos_view.dart'; // Importar a tela de pedidos
 
 class DetalhesView extends StatefulWidget {
   const DetalhesView({super.key});
@@ -13,6 +16,8 @@ class DetalhesView extends StatefulWidget {
 
 class _DetalhesViewState extends State<DetalhesView> {
   int quantidade = 1; // Contador para a quantidade do prato
+  final pedidoService =
+      GetIt.I<PedidoService>(); // Acessando o serviço de pedidos
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +43,12 @@ class _DetalhesViewState extends State<DetalhesView> {
                 image: dados.foto,
                 height: 200,
                 width: screenWidth, // Usando a largura da tela para a imagem
-                fitWeb: BoxFitWeb.cover, // A imagem cobre a largura com proporção mantida
+                fitWeb: BoxFitWeb
+                    .cover, // A imagem cobre a largura com proporção mantida
                 onLoading: const CircularProgressIndicator(
                   color: Colors.indigoAccent,
                 ),
               ),
-
               SizedBox(height: 20),
 
               // Nome do prato
@@ -81,6 +86,8 @@ class _DetalhesViewState extends State<DetalhesView> {
                   style: TextStyle(fontSize: 15),
                 ),
               ),
+
+              // Resumo do prato
               ListTile(
                 title: Text(
                   'Resumo',
@@ -91,7 +98,6 @@ class _DetalhesViewState extends State<DetalhesView> {
                   style: TextStyle(fontSize: 10),
                 ),
               ),
-
 
               SizedBox(height: 20),
 
@@ -130,16 +136,36 @@ class _DetalhesViewState extends State<DetalhesView> {
 
               SizedBox(height: 20),
 
+              // Exibição do total com base na quantidade selecionada
+              Text(
+                'Total: R\$ ${(quantidade * double.parse(dados.preco.replaceAll('R\$ ', '').replaceAll(',', '.'))).toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+
+              SizedBox(height: 20),
+
               // Botão de adicionar ao pedido
               ElevatedButton(
                 onPressed: () {
-                  // Aqui você pode implementar a lógica para adicionar o prato ao pedido
-                  // Ex: Navigator.pop(context);
-                  // Exibir um snackbar ou diálogo
+                  // Adiciona o prato ao pedido usando o serviço
+                  for (int i = 0; i < quantidade; i++) {
+                    pedidoService.adicionarAoPedido(dados);
+                  }
+
+                  // Exibir um snackbar ou diálogo confirmando a adição
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Adicionado $quantidade ${dados.nome}(s) ao pedido!'),
+                      content: Text(
+                          'Adicionado $quantidade ${dados.nome}(s) ao pedido!'),
                     ),
+                  );
+
+                  // Redireciona para a tela de pedidos
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PedidosView()), // Navegar para a tela de pedidos
                   );
                 },
                 style: ElevatedButton.styleFrom(
