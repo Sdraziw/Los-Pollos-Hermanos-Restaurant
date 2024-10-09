@@ -1,8 +1,3 @@
-/* RF002 Cadastro de Usuário
-●	Cadastro de usuário possui todos os campos necessários
-●	Validação correta de nome,  e-mail, senha e confirmação de senha.
-*/
-
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart';
 
@@ -14,7 +9,6 @@ class CadastroView extends StatefulWidget {
 }
 
 class _CadastroViewState extends State<CadastroView> {
-  _CadastroViewState();
   final formKey = GlobalKey<FormState>();
 
   bool _obscureText = true;
@@ -33,6 +27,7 @@ class _CadastroViewState extends State<CadastroView> {
       backgroundColor: Color(0xFFFFD600),
       appBar: AppBar(
         backgroundColor: Color(0xFFFFD600),
+        title: Text('Cadastro de Usuário'), // Título da tela
       ),
       body: Container(
         color: const Color(0xFFFFD600),
@@ -206,7 +201,7 @@ class _CadastroViewState extends State<CadastroView> {
                     backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                     foregroundColor: Colors.white,
                     textStyle: const TextStyle(fontSize: 15),
-                  ),
+                  ), // Dentro do método onPressed do botão de cadastrar em CadastroView
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       // Se o formulário for válido, adiciona o usuário
@@ -217,10 +212,11 @@ class _CadastroViewState extends State<CadastroView> {
                       // Adiciona o novo usuário ao vetor
                       Usuario.adicionarUser(nome, email, senha);
 
-                      // Após cadastro, redireciona o usuário ou mostra uma mensagem de sucesso
-                      Navigator.pop(context);
+                      // Navegar para a tela de menu
+                      Navigator.pushNamed(context, 'login');
                     }
                   },
+
                   child: Text('Cadastrar'),
                 ),
               ],

@@ -10,6 +10,10 @@ class Usuario {
 
   // Função para adicionar um novo usuário
   static void adicionarUser(String nome, String email, String senha) {
+    // Verifica se o email já está cadastrado
+    if (usuarios.any((usuario) => usuario.email == email)) {
+      throw Exception('E-mail já cadastrado');
+    }
     usuarios.add(Usuario(nome: nome, email: email, senha: senha));
   }
 
@@ -21,5 +25,23 @@ class Usuario {
       }
     }
     return null;
+  }
+
+  // Método para converter usuário para Map
+  Map<String, dynamic> toMap() {
+    return {
+      'nome': nome,
+      'email': email,
+      'senha': senha,
+    };
+  }
+
+  // Método para criar um usuário a partir de um Map
+  static Usuario fromMap(Map<String, dynamic> map) {
+    return Usuario(
+      nome: map['nome'],
+      email: map['email'],
+      senha: map['senha'],
+    );
   }
 }

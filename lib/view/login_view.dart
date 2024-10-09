@@ -169,7 +169,7 @@ class _LoginViewState extends State<LoginView> {
                       String senha = txtValor2.text;
 
                       // Verifica se o login é do administrador (usuário: admin, senha: 123456)
-                      if (emailOuUsuario == 'admin' && senha == '123456') {
+                      if (emailOuUsuario == 'admin@email.com' && senha == '123456') {
                         // Redireciona para a tela de admin
                         Navigator.pushNamed(context, 'menu');
                       } else {
