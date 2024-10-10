@@ -5,7 +5,7 @@ class OpcoesPagamentoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Escolha uma Opção de Pagamento'),
+        title: Text('Opções de Pagamento'),
         backgroundColor: Color(0xFFFFD600),
       ),
       body: Center(
@@ -21,6 +21,8 @@ class OpcoesPagamentoView extends StatelessWidget {
                     content: Text('Pagamento via Pix confirmado!\nAguarde, seu pedido está sendo preparado!'),
                   ),
                 );
+                // Redirecionar para a tela de opções de pagamento
+                //Navigator.pushNamed(context, 'menu');//APAGAR DADOS
               },
               child: Column(
                 children: [

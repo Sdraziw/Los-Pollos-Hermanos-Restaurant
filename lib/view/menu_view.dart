@@ -47,7 +47,7 @@ class _MenuViewState extends State<MenuView> {
       // Lógica para a tela de Menu
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'categorias');
+      //Navigator.pushNamed(context, 'categorias');
     } else if (index == 2) {
       // Aqui você pode passar o e-mail do usuário logado para buscar suas informações
       String emailUsuario =
@@ -332,8 +332,7 @@ class _MenuViewState extends State<MenuView> {
         onTap: _onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.category), label: 'Categorias'),
+          //BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categorias'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),

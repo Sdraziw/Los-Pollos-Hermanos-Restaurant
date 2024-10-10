@@ -10,7 +10,7 @@ class PedidosView extends StatefulWidget {
 
 class _PedidosViewState extends State<PedidosView> {
   final pedidoService = GetIt.I<PedidoService>();
-  bool incluirGorjeta = true; // Estado para controlar se a gorjeta de 10% será incluída
+  bool incluirGorjeta = false; // Estado para controlar se a gorjeta de 10% será incluída
   double percentualGorjeta = 10.0; // Percentual de gorjeta padrão
   String mensagemErro = ''; // Armazenar a mensagem de erro
 
