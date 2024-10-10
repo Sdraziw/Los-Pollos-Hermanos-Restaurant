@@ -8,7 +8,8 @@ import 'package:preojeto/view/menu_view.dart';
 import 'package:preojeto/view/categoria_view.dart';
 import 'package:preojeto/view/pedidos_view.dart';
 import 'package:preojeto/services/pedido_service.dart';
-import 'package:preojeto/view/perfil_view.dart'; // Importar o serviço de pedidos
+import 'package:preojeto/view/perfil_view.dart';
+import 'package:preojeto/view/pagamento_view.dart';
 
 void main() {
   setup(); // Registrar o serviço de pedidos antes de executar o app
@@ -34,8 +35,9 @@ class MainApp extends StatelessWidget {
         'detalhes': (context) => const DetalhesView(),
         'categoria': (context) => const CategoriaView(),
         'esqueci_senha': (context) => EsqueciSenhaView(),
-        'pedidos': (context) => PedidosView(), // Navegar para a tela de pedidos
+        'pedidos': (context) => PedidosView(),
         'perfil': (context) => PerfilView(),
+        'pagamento': (context) => PagamentoView(),
       },
     );
   }

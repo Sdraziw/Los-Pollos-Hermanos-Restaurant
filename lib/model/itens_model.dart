@@ -2,7 +2,6 @@
 ●	Apresentação detalhada dos itens do cardápio, incluindo imagem, nome, descrição completa e preço
 ●	Adicionar item ao pedido.
 */
-
 class Prato {
   // Atributos
   final String nome;
@@ -10,6 +9,7 @@ class Prato {
   final String preco;
   final String foto;
   final String resumo;
+  int quantidade; 
 
   // Construtor
   Prato(
@@ -17,8 +17,9 @@ class Prato {
     this.descricao,
     this.preco,
     this.foto,
-    this.resumo,
-  );
+    this.resumo, {
+    this.quantidade = 1,
+  });
 
   //
   // Método para geração de Entradas

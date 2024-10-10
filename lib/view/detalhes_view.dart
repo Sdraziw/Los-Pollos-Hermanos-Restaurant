@@ -5,7 +5,7 @@ import 'package:image_network/image_network.dart';
 import 'package:get_it/get_it.dart';
 import '../model/itens_model.dart';
 import '../services/pedido_service.dart';
-import 'pedidos_view.dart'; // Importar a tela de pedidos
+
 
 class DetalhesView extends StatefulWidget {
   const DetalhesView({super.key});
