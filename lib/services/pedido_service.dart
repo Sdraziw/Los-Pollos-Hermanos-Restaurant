@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import '../model/itens_model.dart';
 
 class PedidoService {
-  List<Prato> _pedidos = [];
+  final List<Prato> _pedidos = [];
 
   List<Prato> get pedidos => _pedidos;
 

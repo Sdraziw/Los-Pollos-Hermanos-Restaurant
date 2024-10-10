@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class EsqueciSenhaView extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
+  EsqueciSenhaView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

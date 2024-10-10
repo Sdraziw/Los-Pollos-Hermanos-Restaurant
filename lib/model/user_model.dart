@@ -44,4 +44,14 @@ class Usuario {
       senha: map['senha'],
     );
   }
+
+  // Função para retornar um usuário específico pelo e-mail
+  static Usuario? buscarUsuarioPorEmail(String email) {
+    try {
+      return usuarios.firstWhere((usuario) => usuario.email == email);
+    } catch (e) {
+      // Retorna null se não encontrar o usuário
+      return null;
+    }
+  }
 }

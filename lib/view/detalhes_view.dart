@@ -29,11 +29,11 @@ class _DetalhesViewState extends State<DetalhesView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes do Prato'),
+        title: Text(dados.nome),
         backgroundColor: Color(0xFFFFD600), // Mantendo a cor da AppBar
       ),
       body: Container(
-        color: Colors.yellow, // Fundo alterado para amarelo
+        color: Colors.white, // Fundo alterado para amarelo
         child: Padding(
           padding: EdgeInsets.all(20),
           child: ListView(
@@ -51,51 +51,29 @@ class _DetalhesViewState extends State<DetalhesView> {
               ),
               SizedBox(height: 20),
 
-              // Nome do prato
+              // Descrição do prato
               ListTile(
                 title: Text(
-                  'Nome',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  'Descrição',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  dados.nome,
-                  style: TextStyle(fontSize: 22),
+                  "${dados.resumo}\n${dados.descricao}",
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
+
+              SizedBox(height: 30),
 
               // Preço do prato
               ListTile(
                 title: Text(
                   'Preço',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   dados.preco, // Exibindo o preço em formato monetário
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-
-              // Descrição do prato
-              ListTile(
-                title: Text(
-                  'Descrição',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  dados.descricao,
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-
-              // Resumo do prato
-              ListTile(
-                title: Text(
-                  'Resumo',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  dados.resumo,
-                  style: TextStyle(fontSize: 10),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
 
@@ -134,7 +112,7 @@ class _DetalhesViewState extends State<DetalhesView> {
                 ],
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 5),
 
               // Exibição do total com base na quantidade selecionada
               Text(
@@ -161,14 +139,16 @@ class _DetalhesViewState extends State<DetalhesView> {
                   );
 
                   // Redireciona para a tela de pedidos
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             PedidosView()), // Navegar para a tela de pedidos
-                  );
+                  );*/
                 },
                 style: ElevatedButton.styleFrom(
+                  minimumSize: Size(300, 50),
+                  foregroundColor: Colors.black,
                   backgroundColor: Color(0xFFFFD600), // Cor do botão
                   padding: EdgeInsets.symmetric(vertical: 15),
                   textStyle: TextStyle(fontSize: 18),

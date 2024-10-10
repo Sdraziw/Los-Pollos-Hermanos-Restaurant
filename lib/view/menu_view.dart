@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preojeto/model/user_model.dart';
 import '../model/itens_model.dart';
 
 class MenuView extends StatefulWidget {
@@ -42,15 +43,33 @@ class _MenuViewState extends State<MenuView> {
       _currentIndex = index;
     });
 
-    // Lógica para navegação entre telas
     if (index == 0) {
-      // Lógica para Menu, você pode querer adicionar algo aqui
+      // Lógica para a tela de Menu
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'categorias'); // Adicione a rota de categorias
+      Navigator.pushNamed(context, 'categorias');
     } else if (index == 2) {
-      // Navegar para a tela de perfil
-      Navigator.pushNamed(context, 'perfil'); // Adicione a rota de perfil
+      // Aqui você pode passar o e-mail do usuário logado para buscar suas informações
+      String emailUsuario = "email_do_usuario_logado"; // Troque pelo método que você usa para obter o email
+
+      // Recuperar o usuário através da função buscarUsuarioPorEmail
+      Usuario? usuario = Usuario.buscarUsuarioPorEmail(emailUsuario);
+
+      // Verifique se o usuário foi encontrado
+      if (usuario != null) {
+        Navigator.pushNamed(
+          context,
+          'perfil',
+          arguments: {
+            'nome': usuario.nome,
+            'email': usuario.email,
+            'senha': usuario.senha,
+          },
+        );
+      } else {
+        // Tratamento caso o usuário não seja encontrado
+        print('Usuário não encontrado');
+      }
     }
   }
 
@@ -70,7 +89,7 @@ class _MenuViewState extends State<MenuView> {
         title: Row(
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: 40,
                 child: TextField(
                   onChanged: (value) {
@@ -79,7 +98,7 @@ class _MenuViewState extends State<MenuView> {
                     });
                   },
                   decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search),
                     hintText: 'Pesquisar...',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0), // Arredondar a barra de pesquisa
@@ -93,10 +112,10 @@ class _MenuViewState extends State<MenuView> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
+              icon: Icon(Icons.shopping_cart, color: Colors.black),
               onPressed: () {
                 // Navegar para a tela do carrinho de compras
-                Navigator.pushNamed(context, 'carrinho');
+                Navigator.pushNamed(context, 'pedidos');
               },
             ),
           ],
@@ -122,10 +141,10 @@ class _MenuViewState extends State<MenuView> {
                     width: 1.0, // Largura da borda
                   ),
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 100, // Altura do card
                   child: ListTile(
-                    leading: Container(
+                    leading: SizedBox(
                       width: 80, // Largura da imagem
                       height: 80, // Altura da imagem para preencher o card
                       child: ClipRRect(
@@ -144,8 +163,10 @@ class _MenuViewState extends State<MenuView> {
                     },
                   ),
                 ),
-              )).toList(),
+              )),
             ],
+
+            SizedBox(height: 50),
 
             // Pratos Principais
             if (pratosPrincipaisFiltrados.isNotEmpty) ...[
@@ -163,10 +184,10 @@ class _MenuViewState extends State<MenuView> {
                     width: 1.0, // Largura da borda
                   ),
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 100, // Altura do card
                   child: ListTile(
-                    leading: Container(
+                    leading: SizedBox(
                       width: 80, // Largura da imagem
                       height: 80, // Altura da imagem para preencher o card
                       child: ClipRRect(
@@ -185,8 +206,10 @@ class _MenuViewState extends State<MenuView> {
                     },
                   ),
                 ),
-              )).toList(),
+              )),
             ],
+
+            SizedBox(height: 50),
 
             // Bebidas
             if (bebidasFiltradas.isNotEmpty) ...[
@@ -204,10 +227,10 @@ class _MenuViewState extends State<MenuView> {
                     width: 1.0, // Largura da borda
                   ),
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 100, // Altura do card
                   child: ListTile(
-                    leading: Container(
+                    leading: SizedBox(
                       width: 80, // Largura da imagem
                       height: 80, // Altura da imagem para preencher o card
                       child: ClipRRect(
@@ -226,8 +249,10 @@ class _MenuViewState extends State<MenuView> {
                     },
                   ),
                 ),
-              )).toList(),
+              )),
             ],
+
+            SizedBox(height: 50),
 
             // Sobremesas
             if (sobremesasFiltradas.isNotEmpty) ...[
@@ -245,10 +270,10 @@ class _MenuViewState extends State<MenuView> {
                     width: 1.0, // Largura da borda
                   ),
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 100, // Altura do card
                   child: ListTile(
-                    leading: Container(
+                    leading: SizedBox(
                       width: 80, // Largura da imagem
                       height: 80, // Altura da imagem para preencher o card
                       child: ClipRRect(
@@ -267,28 +292,18 @@ class _MenuViewState extends State<MenuView> {
                     },
                   ),
                 ),
-              )).toList(),
+              )),
             ],
           ],
         ),
       ),
-      // Bottom Navigation Bar adicionada
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Categorias',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person), // Ícone para o perfil
-            label: 'Perfil',
-          ),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categorias'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
     );
