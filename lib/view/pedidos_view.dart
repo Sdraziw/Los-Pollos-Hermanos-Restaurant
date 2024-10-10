@@ -94,8 +94,8 @@ class _PedidosViewState extends State<PedidosView> {
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
                       setState(() {
-                        // Verificar se a entrada contém apenas números, ponto ou vírgula
-                        if (RegExp(r'^[0-9.,]+$').hasMatch(value)) {
+                        // Verificar se a entrada contém apenas números, ponto ou vírgula, e não repetidos
+                        if (RegExp(r'^[0-9]*[.,]?[0-9]*$').hasMatch(value)) {
                           mensagemErro = ''; // Nenhum erro
                           double? novoPercentual = double.tryParse(value.replaceAll(',', '.'));
                           if (novoPercentual != null && novoPercentual > 0) {
@@ -104,7 +104,7 @@ class _PedidosViewState extends State<PedidosView> {
                             percentualGorjeta = 10.0; // Valor padrão se a entrada for inválida
                           }
                         } else {
-                          mensagemErro = 'Por favor, insira apenas números, ponto ou vírgula.'; // Exibir erro
+                          mensagemErro = 'Insira um valor válido. Apenas números, ponto ou vírgula são permitidos.'; // Exibir erro
                         }
                       });
                     },
