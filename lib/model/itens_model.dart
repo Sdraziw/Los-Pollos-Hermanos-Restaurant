@@ -37,14 +37,14 @@ class Prato {
       "Nuggets",
       "Nuggets de frango empanados, crocantes por fora e suculentos por dentro",
       'R\$ 10,50',
-      "lib/images/nuggets.jpg",
+      "lib/images/nuggets.png",
       '10 pedaços | 300g',
     ));
     lista.add(Prato(
       "Batata Frita G",
       "Batatas fritas crocantes e temperadas",
       'R\$ 15,50',
-      "lib/images/french fries.jpg",
+      "lib/images/french fries.png",
       '14 pedaços | 400g',
     ));
     lista.add(Prato(
@@ -54,6 +54,7 @@ class Prato {
       "lib/images/onions_batatas.png",
       'Sortidos 1/3 de onions + 1/3 de batatas + 1/3 de frango empanado| 1,1 kg',
     ));
+    
     return lista;
   }
 
@@ -83,6 +84,13 @@ class Prato {
       "lib/images/los-polos-hermanos14.png",
       '12 pedaços | 350g',
     ));
+    lista.add(Prato(
+      "Combo Duplo - Cê é LOCO cachoeira",
+      "2 Pães de hamburguer, 2 X Frango Parrudo Empanado, Molho Barbecue",
+      'R\$ 15,90',
+      "lib/images/slc que foto.jpeg",
+      '2 lanches parrudo | 200g cada',
+    ));
     return lista;
   }
 
@@ -102,28 +110,35 @@ class Prato {
       "Refrigerante Coca",
       "Refrigerante Coca 350ml gelado para acompanhar seu prato",
       'R\$ 5,00',
-      "lib/images/coke.jpg",
+      "lib/images/coke.png",
+      '350ml',
+    ));
+    lista.add(Prato(
+      "Refrigerante Schweppes",
+      "Refrigerante Schweppes 1500ml gelado para acompanhar seu pedido",
+      'R\$ 8,50',
+      "lib/images/Schweppes.png",
       '350ml',
     ));
     lista.add(Prato(
       "Água c/gás",
       "Água mineral com gás, refrescante",
       'R\$ 3,00',
-      "lib/images/agua-com-gas-500ml.jpg",
+      "lib/images/agua-com-gas-500ml.png",
       '500ml',
     ));
     lista.add(Prato(
       "Água s/gás",
       "Água mineral natural, perfeita para hidratação",
       'R\$ 2,50',
-      "lib/images/agua_sem_gas.jpg",
+      "lib/images/agua_sem_gas.png",
       '500ml',
     ));
     lista.add(Prato(
       "Suco Dell Valle",
       "Suco natural de frutas, refrescante e saudável",
       'R\$ 5,50',
-      "lib/images/suco_delvale.jpg",
+      "lib/images/suco_delvale.png",
       '350ml',
     ));
     return lista;

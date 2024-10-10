@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:math'; // Para gerar número aleatório
+import 'dart:math'; 
 
 class PagamentoView extends StatelessWidget {
   @override
@@ -25,6 +25,14 @@ class PagamentoView extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
+            Text(
+              'Informe este para fazer o pagamento: #$numeroPedido',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 25, 0, 255),
+              ),
+            ),
             SizedBox(height: 20), // Espaçamento entre o texto e a imagem
             // Exibir a imagem
             Image.asset(
@@ -32,23 +40,12 @@ class PagamentoView extends StatelessWidget {
               fit: BoxFit.cover,
               width: 300, // Ajuste a largura conforme necessário
             ),
-            SizedBox(height: 20), // Espaçamento entre a imagem e o ícone
-            // Ícone de dinheiro
-            Icon(
-              Icons.attach_money,
-              size: 48,
-              color: Colors.green, // Cor do ícone
-            ),
-            SizedBox(height: 20), // Espaçamento entre o ícone e o botão
+            SizedBox(height: 20), // Espaçamento entre a imagem e o botão
             // Botão para pagar antecipadamente
             ElevatedButton(
               onPressed: () {
-                // Ação ao pressionar o botão
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Pagamento para retirada confirmado!'),
-                  ),
-                );
+                // Redirecionar para a tela de opções de pagamento
+                Navigator.pushNamed(context, 'opcoes_pagamento');
               },
               child: Text('Pagar Antecipadamente'),
               style: ElevatedButton.styleFrom(

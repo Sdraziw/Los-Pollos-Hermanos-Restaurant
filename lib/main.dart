@@ -10,6 +10,7 @@ import 'package:preojeto/view/pedidos_view.dart';
 import 'package:preojeto/services/pedido_service.dart';
 import 'package:preojeto/view/perfil_view.dart';
 import 'package:preojeto/view/pagamento_view.dart';
+import 'package:preojeto/view/opcoes_pagamento_view.dart';
 
 void main() {
   setup(); // Registrar o serviço de pedidos antes de executar o app
@@ -38,6 +39,7 @@ class MainApp extends StatelessWidget {
         'pedidos': (context) => PedidosView(),
         'perfil': (context) => PerfilView(),
         'pagamento': (context) => PagamentoView(),
+        'opcoes_pagamento': (context) => OpcoesPagamentoView(),
       },
     );
   }
