@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart'; // Importa a classe Usuario
+import 'package:preojeto/services/pedido_service.dart'; // Importa o PedidoService
 import 'dart:math'; // Para gerar cores aleatórias
 
 class LoginView extends StatefulWidget {
@@ -14,6 +15,10 @@ class LoginView extends StatefulWidget {
 
   @override
   State<LoginView> createState() => _LoginViewState();
+}
+
+void promo(BuildContext context) {
+  Navigator.pushNamedAndRemoveUntil(context, 'promo', (route) => false);
 }
 
 class _LoginViewState extends State<LoginView> {
@@ -43,7 +48,8 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     String desertImage =
         clickCount >= 4 ? "lib/images/deserto1.png" : "lib/images/deserto.png";
-    Color containerColor = clickCount >= 4 ? Colors.black : Colors.transparent;
+    Color containerColor =
+        clickCount >= 4 ? const Color.fromARGB(0, 0, 0, 0) : Colors.transparent;
     backgroundColor = clickCount >= 4 ? Colors.black : const Color(0xFFFFD600);
 
     return Scaffold(
@@ -70,9 +76,8 @@ class _LoginViewState extends State<LoginView> {
                         Text('Login',
                             style: TextStyle(
                               fontSize: 18,
-                              color: clickCount >= 4
-                                  ? Colors.white
-                                  : primaryColor,
+                              color:
+                                  clickCount >= 4 ? Colors.white : primaryColor,
                             )),
                       ],
                     ),
@@ -89,9 +94,7 @@ class _LoginViewState extends State<LoginView> {
                             clickCount >= 4 ? Colors.black54 : Colors.white,
                         labelText: 'Usuário ou e-mail',
                         labelStyle: TextStyle(
-                          color: clickCount >= 4
-                              ? Colors.white
-                              : Colors.black,
+                          color: clickCount >= 4 ? Colors.white : Colors.black,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -128,9 +131,7 @@ class _LoginViewState extends State<LoginView> {
                             clickCount >= 4 ? Colors.black54 : Colors.white,
                         labelText: 'Senha',
                         labelStyle: TextStyle(
-                          color: clickCount >= 4
-                              ? Colors.white
-                              : Colors.black,
+                          color: clickCount >= 4 ? Colors.white : Colors.black,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -144,9 +145,8 @@ class _LoginViewState extends State<LoginView> {
                             _obscureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: clickCount >= 4
-                                ? Colors.white
-                                : Colors.black,
+                            color:
+                                clickCount >= 4 ? Colors.white : Colors.black,
                           ),
                           onPressed: () {
                             setState(() {
@@ -194,9 +194,8 @@ class _LoginViewState extends State<LoginView> {
                             "Esqueci a senha",
                             style: TextStyle(
                               fontSize: 13,
-                              color: clickCount >= 4
-                                  ? Colors.white
-                                  : Colors.blue,
+                              color:
+                                  clickCount >= 4 ? Colors.white : Colors.blue,
                               decoration: TextDecoration.underline,
                             ),
                           ),
@@ -207,27 +206,33 @@ class _LoginViewState extends State<LoginView> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 50),
-                        backgroundColor:
-                            clickCount >= 4 ? primaryColor : Colors.blue,
+                        backgroundColor: clickCount >= 4
+                            ? primaryColor
+                            : const Color.fromARGB(255, 255, 255, 255),
                         foregroundColor: clickCount >= 4
-                            ? Colors.white
+                            ? const Color.fromARGB(255, 255, 255, 255)
                             : const Color.fromARGB(255, 0, 0, 0),
                         textStyle: const TextStyle(fontSize: 15),
                         side: BorderSide(
-                          color: clickCount >= 4 ? Colors.white : Colors.black,
+                          color: clickCount >= 4
+                              ? Colors.white
+                              : const Color.fromARGB(255, 0, 0, 0),
                           width: 2,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        // Marcar como async aqui
                         if (formKey.currentState!.validate()) {
                           String emailOuUsuario = txtValor1.text;
                           String senha = txtValor2.text;
 
-                          if (emailOuUsuario == 'admin@email.com' &&
-                              senha == '123456') {
+                          // Lógica de login
+                          if ((emailOuUsuario == 'admin@email.com') ||
+                              (emailOuUsuario == 'teste@teste.com') &&
+                                  senha == '123456') {
                             Navigator.pushNamed(context, 'menu');
                           } else {
                             Usuario? usuario = Usuario.usuarios.firstWhere(
@@ -235,14 +240,24 @@ class _LoginViewState extends State<LoginView> {
                                   (user.email == emailOuUsuario ||
                                       user.nome == emailOuUsuario) &&
                                   user.senha == senha,
-                              orElse: () => Usuario(
-                                  nome: '',
-                                  email: '',
-                                  senha: ''),
+                              orElse: () =>
+                                  Usuario(nome: '', email: '', senha: ''),
                             );
 
                             if (usuario.nome.isNotEmpty) {
-                              Navigator.pushNamed(context, 'menu');
+                              // Gerar número do pedido
+                              String numeroPedido = await PedidoService()
+                                  .gerarNumeroPedido(); // Aqui você pode usar await
+
+                              // Passar nome e número do pedido para a tela de pagamento
+                              Navigator.pushNamed(
+                                context,
+                                'pagamento',
+                                arguments: {
+                                  'nome': usuario.nome,
+                                  'numeroPedido': numeroPedido,
+                                },
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -275,35 +290,78 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
           Positioned(
-            bottom: 70,
-            left: MediaQuery.of(context).size.width / 2 - 30,
+            bottom: clickCount >= 4
+                ? clickCount + 115
+                : clickCount + 80, // Ajuste na posição vertical
+            left: MediaQuery.of(context).size.width / 3 - 30,
             child: GestureDetector(
               onTap: () {
                 setState(() {
                   clickCount++;
                   if (clickCount == 1) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Clique para mudar a cor e a imagem.')),
+                      SnackBar(
+                          content: Text(
+                        'Sol com sombra?  ${(clickCount)}ª vez que vejo!',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
+                    );
+                  } else if (clickCount == 2) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                        'Sol não tem sombra!  ${(clickCount)}ª vez observando!',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold),
+                      )),
+                    );
+                  } else if (clickCount == 3) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                        'Sol se movendo ou estou delirando pela ${(clickCount)}ª vez',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      )),
                     );
                   } else if (clickCount == 4) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Sol não tem sombra.')),
+                      SnackBar(
+                          content: Text(
+                        'Lua! Agora de noite estou delirando pela ${(clickCount)}ª vez\nAchei que fosse o calor! Mas não era! É FOME!',
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      )),
                     );
-                  } else if (clickCount >= 5) {
+                  } else if (clickCount == 5) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Easter Egg ativado!')),
+                      SnackBar(
+                          content: Text(
+                        'Devo estar com fome, pela ${(clickCount)}ª vez, estou delirando',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
+                      )),
                     );
-                  } else if (clickCount >= 10) {
+                  } else if (clickCount == 6) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Voltamos ao dia!')),
+                      const SnackBar(
+                        content: Text(
+                          'Easter Egg ativado!',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     );
-                    clickCount = 0; // Reseta o contador para 0 após 10 cliques
+
+                    Navigator.pushNamed(context, 'promo');
                   }
                 });
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
+                transform: Matrix4.translationValues(0,
+                    clickCount >= 4 ? -20 : 0, 0), // Move o círculo para cima
                 width: clickCount >= 4
                     ? 50
                     : 97, // Diminui o tamanho após 4 cliques
@@ -331,7 +389,6 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ),
-
           // Imagem do deserto na parte inferior
           Positioned(
             left: 0,

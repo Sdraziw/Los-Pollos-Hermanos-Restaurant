@@ -332,7 +332,7 @@ class _MenuViewState extends State<MenuView> {
         onTap: _onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          //BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categorias'),
+          //BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categorias'),//Utilizado Direto no Menu
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
@@ -347,7 +347,7 @@ class _MenuViewState extends State<MenuView> {
           );
 
           // Após o logout, navega para a tela de login.
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 1), () {
             Navigator.pushReplacementNamed(context, 'login');
           });
         },
