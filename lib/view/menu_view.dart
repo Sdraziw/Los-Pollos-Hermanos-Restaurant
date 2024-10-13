@@ -21,6 +21,8 @@ class _MenuViewState extends State<MenuView> {
   void initState() {
     super.initState();
 
+    //optamos náo usar ListView.builder
+
     // Preencher as listas com os Pratos organizados por categoria
     listaEntradas = Prato.gerarEntradas();
     listaPratosPrincipais = Prato.gerarPratosPrincipais();
@@ -46,8 +48,8 @@ class _MenuViewState extends State<MenuView> {
     if (index == 0) {
       // Lógica para a tela de Menu
     } else if (index == 1) {
-      // Navegar para a tela de categorias
-      //Navigator.pushNamed(context, 'categorias');
+      // Navegar para a tela de historico
+      Navigator.pushNamed(context, 'historico');
     } else if (index == 2) {
       // Aqui você pode passar o e-mail do usuário logado para buscar suas informações
       String emailUsuario =
@@ -332,7 +334,9 @@ class _MenuViewState extends State<MenuView> {
         onTap: _onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          //BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categorias'),//Utilizado Direto no Menu
+          BottomNavigationBarItem(
+              icon: Icon(Icons.history), label: 'Histórico'),
+          //Utilizado Direto no Menu
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),

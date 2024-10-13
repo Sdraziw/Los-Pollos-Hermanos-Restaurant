@@ -60,6 +60,7 @@ class _CadastroViewState extends State<CadastroView> {
                 SizedBox(height: 20),
 
                 // Usuário
+                /*
                 TextFormField(
                   controller: txtUsuario,
                   style: const TextStyle(fontSize: 18),
@@ -78,6 +79,7 @@ class _CadastroViewState extends State<CadastroView> {
                     return null;
                   },
                 ),
+                */
                 SizedBox(height: 20),
 
                 // E-mail
@@ -211,7 +213,12 @@ class _CadastroViewState extends State<CadastroView> {
 
                       // Adiciona o novo usuário ao vetor
                       Usuario.adicionarUser(nome, email, senha);
-
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Cadastro efetuado com sucesso!\nNome: $nome\nE-mail: $email!'),
+                        ),
+                      );
                       // Navegar para a tela de menu
                       Navigator.pushNamed(context, 'login');
                     }

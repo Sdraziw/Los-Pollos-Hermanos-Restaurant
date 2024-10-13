@@ -1,27 +1,23 @@
+//import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
-import '../model/itens_model.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import '../model/itens_model.dart';
 
 class PedidoService {
   static const String _numeroPedidoKey = 'numeroPedido';
+  static const String _historicoKey = 'historicoPedidos';
 
   // Registrar o serviço
   static void setup() {
     getIt.registerLazySingleton<PedidoService>(() => PedidoService());
-    final logger = Logger();
-    logger.d('PedidoService registrado: ${getIt<PedidoService>()}'); // Mensagem de depuração
   }
 
   Future<String> gerarNumeroPedido() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int numeroPedido = prefs.getInt(_numeroPedidoKey) ?? 0; 
+    int numeroPedido = prefs.getInt(_numeroPedidoKey) ?? 0;
     numeroPedido++;
-    await prefs.setInt(_numeroPedidoKey, numeroPedido); 
-    return numeroPedido.toString().padLeft(4, '0'); 
+    await prefs.setInt(_numeroPedidoKey, numeroPedido);
+    return numeroPedido.toString().padLeft(4, '0');
   }
 
   final List<Prato> _pedidos = [];
@@ -39,21 +35,21 @@ class PedidoService {
     _pedidos.clear();
   }
 
-  Future<void> logToFile(String message) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/app.log');
-    await file.writeAsString('$message\n', mode: FileMode.append);
+  Future<void> registrarHistorico(String numeroPedido) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> historico = prefs.getStringList(_historicoKey) ?? [];
+
+    // Adiciona o histórico com o número do pedido
+    historico.add(
+        'Pedido: $numeroPedido - Status: ${_pedidos.first.status} - Itens: ${_pedidos.map((prato) => prato.nome).join(", ")}');
+
+    await prefs.setStringList(_historicoKey, historico);
+    limparPedido(); // Limpa o pedido após registrar
   }
 
-  Future<void> setupWithSnackbar(BuildContext context) async {
-    // Apenas para registrar com Snackbar, se necessário
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('PedidoService registrado: ${getIt<PedidoService>()}'),
-      ),
-    );
-
-    await logToFile('PedidoService registrado: ${getIt<PedidoService>()}'); // Registra no arquivo
+  Future<List<String>> obterHistorico() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_historicoKey) ?? [];
   }
 }
 

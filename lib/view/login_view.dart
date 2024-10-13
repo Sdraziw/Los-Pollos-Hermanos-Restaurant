@@ -4,10 +4,10 @@
 ●	O botão "Entrar" aciona o login, e "Cadastrar" navega para o cadastro de usuário.
 ●	O logout redireciona para a tela de login, descartando dados.
 */
-
 import 'package:flutter/material.dart';
 import 'package:preojeto/model/user_model.dart'; // Importa a classe Usuario
 import 'package:preojeto/services/pedido_service.dart'; // Importa o PedidoService
+import 'package:shared_preferences/shared_preferences.dart'; // Para salvar localmente o estado de "Lembre-se de mim"
 import 'dart:math'; // Para gerar cores aleatórias
 
 class LoginView extends StatefulWidget {
@@ -15,10 +15,6 @@ class LoginView extends StatefulWidget {
 
   @override
   State<LoginView> createState() => _LoginViewState();
-}
-
-void promo(BuildContext context) {
-  Navigator.pushNamedAndRemoveUntil(context, 'promo', (route) => false);
 }
 
 class _LoginViewState extends State<LoginView> {
@@ -33,6 +29,37 @@ class _LoginViewState extends State<LoginView> {
   bool _obscureText = true;
   int clickCount = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberMe(); // Carrega o estado de "Lembre-se de mim"
+  }
+
+  // Função para carregar o estado de "Lembre-se de mim" e credenciais
+  void _loadRememberMe() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _rememberMe = prefs.getBool('rememberMe') ?? false;
+      if (_rememberMe) {
+        txtValor1.text = prefs.getString('email') ?? '';
+        txtValor2.text = prefs.getString('senha') ?? '';
+      }
+    });
+  }
+
+  // Função para salvar o estado de "Lembre-se de mim" e credenciais
+  void _saveRememberMe() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('rememberMe', _rememberMe);
+    if (_rememberMe) {
+      prefs.setString('email', txtValor1.text);
+      prefs.setString('senha', txtValor2.text);
+    } else {
+      prefs.remove('email');
+      prefs.remove('senha');
+    }
+  }
+
   // Função para gerar uma cor aleatória
   Color getRandomColor() {
     Random random = Random();
@@ -46,10 +73,16 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    String desertImage =
-        clickCount >= 4 ? "lib/images/deserto1.png" : "lib/images/deserto.png";
-    Color containerColor =
-        clickCount >= 4 ? const Color.fromARGB(0, 0, 0, 0) : Colors.transparent;
+    String desertImage = (clickCount >= 4 && clickCount < 10)
+        ? "lib/images/deserto1.png"
+        : (clickCount >= 38)
+            ? "lib/images/giphy.gif"
+            : "lib/images/deserto.png";
+
+    Color containerColor = (clickCount >= 4 && clickCount < 10)
+        ? const Color.fromARGB(0, 0, 0, 0)
+        : Colors.transparent;
+
     backgroundColor = clickCount >= 4 ? Colors.black : const Color(0xFFFFD600);
 
     return Scaffold(
@@ -92,7 +125,7 @@ class _LoginViewState extends State<LoginView> {
                         filled: true,
                         fillColor:
                             clickCount >= 4 ? Colors.black54 : Colors.white,
-                        labelText: 'Usuário ou e-mail',
+                        labelText: 'E-mail ou nome completo',
                         labelStyle: TextStyle(
                           color: clickCount >= 4 ? Colors.white : Colors.black,
                         ),
@@ -174,6 +207,7 @@ class _LoginViewState extends State<LoginView> {
                             setState(() {
                               _rememberMe = value!;
                             });
+                            _saveRememberMe(); // Salva o estado do checkbox
                           },
                           activeColor: Colors.blue,
                           checkColor: Colors.white,
@@ -224,7 +258,6 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       onPressed: () async {
-                        // Marcar como async aqui
                         if (formKey.currentState!.validate()) {
                           String emailOuUsuario = txtValor1.text;
                           String senha = txtValor2.text;
@@ -233,6 +266,7 @@ class _LoginViewState extends State<LoginView> {
                           if ((emailOuUsuario == 'admin@email.com') ||
                               (emailOuUsuario == 'teste@teste.com') &&
                                   senha == '123456') {
+                            _saveRememberMe(); // Salva as credenciais
                             Navigator.pushNamed(context, 'menu');
                           } else {
                             Usuario? usuario = Usuario.usuarios.firstWhere(
@@ -246,18 +280,19 @@ class _LoginViewState extends State<LoginView> {
 
                             if (usuario.nome.isNotEmpty) {
                               // Gerar número do pedido
-                              String numeroPedido = await PedidoService()
-                                  .gerarNumeroPedido(); // Aqui você pode usar await
+                              String numeroPedido =
+                                  await PedidoService().gerarNumeroPedido();
 
                               // Passar nome e número do pedido para a tela de pagamento
                               Navigator.pushNamed(
                                 context,
-                                'pagamento',
+                                'menu',
                                 arguments: {
                                   'nome': usuario.nome,
                                   'numeroPedido': numeroPedido,
                                 },
                               );
+                              _saveRememberMe(); // Salva as credenciais
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -293,7 +328,7 @@ class _LoginViewState extends State<LoginView> {
             bottom: clickCount >= 4
                 ? clickCount + 115
                 : clickCount + 80, // Ajuste na posição vertical
-            left: MediaQuery.of(context).size.width / 3 - 30,
+            left: MediaQuery.of(context).size.width / 3 - 30 + clickCount * -4,
             child: GestureDetector(
               onTap: () {
                 setState(() {
@@ -329,7 +364,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                        'Lua! Agora de noite estou delirando pela ${(clickCount)}ª vez\nAchei que fosse o calor! Mas não era! É FOME!',
+                        'Lua!? Noite!? Delirando ${(clickCount)}ª vez\nAchei que fosse o calor! Mas não era! É FOME!',
                         style: TextStyle(
                             fontSize: 13, fontWeight: FontWeight.bold),
                       )),
@@ -355,11 +390,34 @@ class _LoginViewState extends State<LoginView> {
                     );
 
                     Navigator.pushNamed(context, 'promo');
+                  } else if (clickCount == 10) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Olhos de águia!',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+                  } else if (clickCount == 38) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Easter Egg ativado *2!',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+
+                    Navigator.pushNamed(context, 'promo2');
                   }
                 });
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 700),
+                curve: Curves.easeInOut, // Suaviza a transição de movimento
                 transform: Matrix4.translationValues(0,
                     clickCount >= 4 ? -20 : 0, 0), // Move o círculo para cima
                 width: clickCount >= 4
@@ -389,7 +447,6 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ),
-          // Imagem do deserto na parte inferior
           Positioned(
             left: 0,
             right: 0,
