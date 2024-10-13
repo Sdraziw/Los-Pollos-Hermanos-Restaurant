@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
 import 'package:preojeto/model/user_model.dart'; // Certifique-se de que esse caminho está correto
 
-class PerfilView extends StatefulWidget {
-  const PerfilView({super.key});
+class ZZZView extends StatefulWidget {
+  const ZZZView({super.key});
 
   @override
-  State<PerfilView> createState() => _PerfilViewState();
+  State<ZZZView> createState() => _ZZZViewState();
 }
 
-class _PerfilViewState extends State<PerfilView> {
-  var nomeAtual = '';
+class _ZZZViewState extends State<ZZZView> {
+  /*var nomeAtual = '';
   var emailAtual = '';
   var senhaAtual = '';
 
@@ -21,9 +21,9 @@ class _PerfilViewState extends State<PerfilView> {
       emailAtual = Usuario.usuarios[0].email;
       senhaAtual = Usuario.usuarios[0].senha;
     }
-  }
+  }*/
 
-  int _currentIndex = 2; // Para controlar a navegação
+  int _currentIndex = 1; // Para controlar a navegação
 
   // Função para alternar entre diferentes telas da BottomNavigationBar
   void _onTabTapped(int index) {
@@ -42,25 +42,72 @@ class _PerfilViewState extends State<PerfilView> {
     }
   }
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     checaUser(); // Chama a função para verificar e preencher os dados do usuário
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove o botão de voltar
+        backgroundColor: Color(0xFFFFD600),
+        title: Column(
+          children: [
+            Row(
+              children: [
+                /*Expanded(
+                  // campo de pesquisa (lupa)
+                  child: SizedBox(
+                    height: 40,
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          query =
+                              value; // Atualiza a query conforme o usuário digita
+                        });
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Digite aqui para pesquisar...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              30.0), // Arredondar a barra de pesquisa
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.black),
+                  onPressed: () {
+                    // Navegar para a tela do carrinho de compras
+                    Navigator.pushNamed(context, 'pedidos');
+                  },
+                ),*/
+              ],
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(50, 80, 50, 10),
         child: Column(
           children: [
-            SizedBox(
+            /*SizedBox(
               height: 150,
               width: 150,
               child: ImageNetwork(
-                image: 'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
+                image:
+                    'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
                 height: 150,
                 width: 150,
                 borderRadius: BorderRadius.circular(100),
@@ -161,7 +208,7 @@ class _PerfilViewState extends State<PerfilView> {
                   Icon(Icons.logout),
                 ],
               ),
-            ),
+            ),*/
           ],
         ),
       ),

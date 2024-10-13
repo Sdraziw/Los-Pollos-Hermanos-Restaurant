@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:preojeto/view/zzz_view.dart';
 import 'package:provider/provider.dart'; // Certifique-se de importar o provider
 
 import 'package:preojeto/view/cadastro_view.dart';
@@ -50,6 +51,7 @@ class MainApp extends StatelessWidget {
         'pagamento': (context) => PagamentoView(),
         'opcoes_pagamento': (context) => OpcoesPagamentoView(),
         'promo': (context) => const PromoView(),
+        'zzz': (context) => const ZZZView(),
       },
     );
   }

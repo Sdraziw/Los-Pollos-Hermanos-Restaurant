@@ -209,6 +209,8 @@ class _CadastroViewState extends State<CadastroView> {
                       String email = txtEmail.text;
                       String senha = txtSenha.text;
 
+                      Usuario.zeraLista();
+
                       // Adiciona o novo usuário ao vetor
                       Usuario.adicionarUser(nome, email, senha);
 

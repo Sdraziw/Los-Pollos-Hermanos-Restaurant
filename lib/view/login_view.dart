@@ -251,12 +251,12 @@ class _LoginViewState extends State<LoginView> {
 
                               // Passar nome e número do pedido para a tela de pagamento
                               Navigator.pushNamed(
-                                context,
-                                'pagamento',
+                                context, 'menu'
+                                /*'pagamento',
                                 arguments: {
                                   'nome': usuario.nome,
                                   'numeroPedido': numeroPedido,
-                                },
+                                },*/
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
