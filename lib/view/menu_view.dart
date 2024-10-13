@@ -48,31 +48,10 @@ class _MenuViewState extends State<MenuView> {
     if (index == 0) {
       // Lógica para a tela de Menu
     } else if (index == 1) {
-      // Navegar para a tela de historico
+      // Navegar para a tela de categorias
       Navigator.pushNamed(context, 'historico');
     } else if (index == 2) {
-      // Aqui você pode passar o e-mail do usuário logado para buscar suas informações
-      String emailUsuario =
-          "email_do_usuario_logado"; // Troque pelo método que você usa para obter o email
-
-      // Recuperar o usuário através da função buscarUsuarioPorEmail
-      Usuario? usuario = Usuario.buscarUsuarioPorEmail(emailUsuario);
-
-      // Verifique se o usuário foi encontrado
-      if (usuario != null) {
-        Navigator.pushNamed(
-          context,
-          'perfil',
-          arguments: {
-            'nome': usuario.nome,
-            'email': usuario.email,
-            'senha': usuario.senha,
-          },
-        );
-      } else {
-        // Tratamento caso o usuário não seja encontrado
-        print('Usuário não encontrado');
-      }
+      Navigator.pushNamed(context, 'perfil');
     }
   }
 
@@ -90,41 +69,46 @@ class _MenuViewState extends State<MenuView> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Remove o botão de voltar
         backgroundColor: Color(0xFFFFD600),
-        title: Row(
+        title: Column(
           children: [
-            Expanded(
-              // campo de pesquisa (lupa)
-              child: SizedBox(
-                height: 40,
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      query =
-                          value; // Atualiza a query conforme o usuário digita
-                    });
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Digite aqui para pesquisar...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          30.0), // Arredondar a barra de pesquisa
-                      borderSide: BorderSide.none,
+            Row(
+              children: [
+                Expanded(
+                  // campo de pesquisa (lupa)
+                  child: SizedBox(
+                    height: 40,
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          query =
+                              value; // Atualiza a query conforme o usuário digita
+                        });
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Digite aqui para pesquisar...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              30.0), // Arredondar a barra de pesquisa
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   ),
                 ),
-              ),
+                IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.black),
+                  onPressed: () {
+                    // Navegar para a tela do carrinho de compras
+                    Navigator.pushNamed(context, 'historico');
+                  },
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {
-                // Navegar para a tela do carrinho de compras
-                Navigator.pushNamed(context, 'pedidos');
-              },
-            ),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -330,17 +314,19 @@ class _MenuViewState extends State<MenuView> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Colors.black,
+        backgroundColor: Color(0xFFFFD600),
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.history), label: 'Histórico'),
-          //Utilizado Direto no Menu
+              icon: Icon(Icons.receipt_long),
+              label: 'Pedidos'), //Utilizado Direto no Menu
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Adiciona lógica de logout aqui, como limpar o estado de autenticação ou sessão do usuário.
           ScaffoldMessenger.of(context).showSnackBar(
@@ -360,7 +346,7 @@ class _MenuViewState extends State<MenuView> {
       ),
 
       floatingActionButtonLocation:
-          FloatingActionButtonLocation.endDocked, // Localização do botão
+          FloatingActionButtonLocation.endDocked, // Localização do botão*/
     );
   }
 }
