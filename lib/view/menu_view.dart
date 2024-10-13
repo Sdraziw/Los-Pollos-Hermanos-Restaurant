@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preojeto/model/user_model.dart';
+//import 'package:preojeto/model/user_model.dart';
 import '../model/itens_model.dart';
 
 class MenuView extends StatefulWidget {
@@ -103,7 +103,7 @@ class _MenuViewState extends State<MenuView> {
                   icon: Icon(Icons.shopping_cart, color: Colors.black),
                   onPressed: () {
                     // Navegar para a tela do carrinho de compras
-                    Navigator.pushNamed(context, 'historico');
+                    Navigator.pushNamed(context, 'pedidos');
                   },
                 ),
               ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+//import 'package:get_it/get_it.dart';
 import '../services/pedido_service.dart';
 
 class HistoricoView extends StatefulWidget {

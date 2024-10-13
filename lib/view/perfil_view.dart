@@ -23,6 +23,7 @@ class _PerfilViewState extends State<PerfilView> {
     }
   }
 
+  bool obscureText = true;
   int _currentIndex = 2; // Para controlar a navegação
 
   // Função para alternar entre diferentes telas da BottomNavigationBar
@@ -36,7 +37,7 @@ class _PerfilViewState extends State<PerfilView> {
       Navigator.pushNamed(context, 'menu');
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'categorias');
+      Navigator.pushNamed(context, 'historico');
     } else if (index == 2) {
       Navigator.pushNamed(context, 'perfil');
     }
@@ -60,7 +61,8 @@ class _PerfilViewState extends State<PerfilView> {
               height: 150,
               width: 150,
               child: ImageNetwork(
-                image: 'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
+                image:
+                    'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
                 height: 150,
                 width: 150,
                 borderRadius: BorderRadius.circular(100),

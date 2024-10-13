@@ -135,7 +135,7 @@ class Prato {
         foto: "lib/images/Schweppes.png",
         descricao:
             "Refrigerante Schweppes 1500ml gelado para acompanhar seu pedido",
-        resumo: '350ml',
+        resumo: 'Um litro e meio.',
       ),
       Prato(
         nome: "Água c/gás",
