@@ -23,7 +23,7 @@ class _PerfilViewState extends State<PerfilView> {
     }
   }
 
-  bool obscureText = true;
+  bool obscureText_ = true;
   int _currentIndex = 2; // Para controlar a navegação
 
   // Função para alternar entre diferentes telas da BottomNavigationBar
@@ -121,6 +121,8 @@ class _PerfilViewState extends State<PerfilView> {
               ),
               readOnly: true,
               initialValue: senhaAtual,
+              obscureText:
+                  obscureText_, // Controla se a senha está oculta ou visível
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -130,6 +132,19 @@ class _PerfilViewState extends State<PerfilView> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                ),
+                // O suffixIcon deve estar dentro do InputDecoration
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    obscureText_ ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText_ =
+                          !obscureText_; // Alterna entre visível e oculto
+                    });
+                  },
                 ),
               ),
             ),
