@@ -23,6 +23,7 @@ class _PerfilViewState extends State<PerfilView> {
     }
   }
 
+  bool obscureText_ = true;
   int _currentIndex = 2; // Para controlar a navegação
 
   // Função para alternar entre diferentes telas da BottomNavigationBar
@@ -36,7 +37,7 @@ class _PerfilViewState extends State<PerfilView> {
       Navigator.pushNamed(context, 'menu');
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'categorias');
+      Navigator.pushNamed(context, 'historico');
     } else if (index == 2) {
       Navigator.pushNamed(context, 'perfil');
     }
@@ -60,7 +61,8 @@ class _PerfilViewState extends State<PerfilView> {
               height: 150,
               width: 150,
               child: ImageNetwork(
-                image: 'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
+                image:
+                    'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
                 height: 150,
                 width: 150,
                 borderRadius: BorderRadius.circular(100),
@@ -119,6 +121,8 @@ class _PerfilViewState extends State<PerfilView> {
               ),
               readOnly: true,
               initialValue: senhaAtual,
+              obscureText:
+                  obscureText_, // Controla se a senha está oculta ou visível
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -128,6 +132,19 @@ class _PerfilViewState extends State<PerfilView> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                ),
+                // O suffixIcon deve estar dentro do InputDecoration
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    obscureText_ ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText_ =
+                          !obscureText_; // Alterna entre visível e oculto
+                    });
+                  },
                 ),
               ),
             ),
@@ -150,7 +167,7 @@ class _PerfilViewState extends State<PerfilView> {
 
                 // Após o logout, navega para a tela de login.
                 Future.delayed(const Duration(seconds: 1), () {
-                  Navigator.pushReplacementNamed(context, 'login');
+                  Navigator.pushReplacementNamed(context, 'splash');
                 });
               },
               child: Row(

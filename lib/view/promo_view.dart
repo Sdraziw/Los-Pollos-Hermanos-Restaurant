@@ -14,7 +14,10 @@ class PromoView extends StatelessWidget {
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(221, 238, 255, 0), Color.fromARGB(82, 255, 0, 0)],
+            colors: [
+              Color.fromARGB(221, 238, 255, 0),
+              Color.fromARGB(82, 255, 0, 0)
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -25,7 +28,7 @@ class PromoView extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const Text(
-              'Você encontrou o Easter Egg!',
+              'Você encontrou o Easter Egg 🎃👻!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -38,12 +41,20 @@ class PromoView extends StatelessWidget {
               'lib/images/promo_image.png', // Substitua pela imagem de promoção
               height: 200,
             ),
+            const Text(
+              'Hamburguer: Frango Parrudo Empanado, Molho Barbecue\nLanche parrudo 🍔200g',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+            ),
             const SizedBox(height: 30),
             const Text(
               'Como recompensa, você ganhou um lanche de brinde na compra!',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 color: Colors.white,
               ),
             ),
@@ -61,12 +72,28 @@ class PromoView extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Text(
-                'DELIRIOS DO DESERTO!\n\n PROMO2024\n\nNecessário uma compra de outro item qualquer do cardápio. Apresente para um atendente junto ao número de pedido e irar ganhar o lanche extra!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
+              child: const Text.rich(
+                TextSpan(
+                  text: 'DELIRIOS DO DESERTO!\n\n',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:
+                          'LANCHE2024\n\n', // Texto da promoção com cor diferente
+                      style: TextStyle(
+                        color: Colors.red, // Cor específica para "PROMO2024"
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          'Necessário uma compra de outro item qualquer do cardápio. Apresente para um atendente junto ao número de pedido e irá ganhar 1 lanche extra!',
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -75,11 +102,13 @@ class PromoView extends StatelessWidget {
               onPressed: () {
                 // Ação do botão (voltar ao menu, aplicar o cupom, etc.)
                 Navigator.pop(context); // Fecha a tela de promoção
+                Navigator.pushNamed(context, 'login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.deepPurple,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

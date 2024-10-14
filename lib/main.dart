@@ -1,7 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:preojeto/view/zzz_view.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart'; // Certifique-se de importar o provider
 
 import 'package:preojeto/view/cadastro_view.dart';
@@ -15,13 +14,18 @@ import 'package:preojeto/view/perfil_view.dart';
 import 'package:preojeto/view/pagamento_view.dart';
 import 'package:preojeto/view/opcoes_pagamento_view.dart';
 import 'package:preojeto/view/promo_view.dart';
+import 'package:preojeto/view/promo2_view.dart';
+import 'package:preojeto/view/historico_view.dart';
+import 'package:preojeto/view/splash_view.dart';
 
 import 'package:preojeto/services/message_notifier.dart';
 import 'package:preojeto/services/pedido_service.dart';
+import 'package:preojeto/widgets/aurora_animation.dart'; // Importa a animação da aurora
 
 void main() {
-  setup(); // Registrar o serviço de pedidos antes de executar o app
+  setupservice(); // Registrar o serviço de pedidos antes de executar o app
   runApp(
+    //home: AuroraAnimation(), // Usa a animação da aurora como tela inicial
     DevicePreview(
       builder: (context) => ChangeNotifierProvider(
         create: (context) => MessageNotifier(),
@@ -51,10 +55,11 @@ class MainApp extends StatelessWidget {
         'pagamento': (context) => PagamentoView(),
         'opcoes_pagamento': (context) => OpcoesPagamentoView(),
         'promo': (context) => const PromoView(),
-        'zzz': (context) => const ZZZView(),
+        'promo2': (context) => const Promo2View(),
+        'aurora': (context) => const AuroraAnimation(),
+        'historico': (context) => HistoricoView(),
+        'splash': (context) => SplashView(),
       },
     );
   }
-
-  
 }

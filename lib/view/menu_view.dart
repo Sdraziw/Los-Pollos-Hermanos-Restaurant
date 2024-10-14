@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preojeto/model/user_model.dart';
+//import 'package:preojeto/model/user_model.dart';
 import '../model/itens_model.dart';
 
 class MenuView extends StatefulWidget {
@@ -20,6 +20,8 @@ class _MenuViewState extends State<MenuView> {
   @override
   void initState() {
     super.initState();
+
+    //optamos náo usar ListView.builder
 
     // Preencher as listas com os Pratos organizados por categoria
     listaEntradas = Prato.gerarEntradas();
@@ -47,9 +49,9 @@ class _MenuViewState extends State<MenuView> {
       // Lógica para a tela de Menu
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'zzz');
+      Navigator.pushNamed(context, 'historico');
     } else if (index == 2) {
-        Navigator.pushNamed(context, 'perfil');
+      Navigator.pushNamed(context, 'perfil');
     }
   }
 
@@ -106,7 +108,6 @@ class _MenuViewState extends State<MenuView> {
                 ),
               ],
             ),
-
             SizedBox(height: 10),
           ],
         ),
@@ -312,7 +313,6 @@ class _MenuViewState extends State<MenuView> {
           ],
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.black,
         backgroundColor: Color(0xFFFFD600),
@@ -320,7 +320,9 @@ class _MenuViewState extends State<MenuView> {
         onTap: _onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: 'Pedidos'),//Utilizado Direto no Menu
+          BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long),
+              label: 'Pedidos'), //Utilizado Direto no Menu
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
