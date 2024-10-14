@@ -337,7 +337,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                        'Sol com sombra?  ${(clickCount)}ª vez que vejo!',
+                        '☼ Sol com sombra?  ${(clickCount)}ª vez que vejo!',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       )),
@@ -346,7 +346,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                        'Sol não tem sombra!  ${(clickCount)}ª vez observando!',
+                        '☀ Sol não tem sombra!  ${(clickCount)}ª vez observando!',
                         style: TextStyle(
                             fontSize: 17, fontWeight: FontWeight.bold),
                       )),
@@ -355,7 +355,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                        'Sol se movendo ou estou delirando pela ${(clickCount)}ª vez',
+                        '☀ Sol se movendo ou estou delirando pela ${(clickCount)}ª vez',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       )),
@@ -364,7 +364,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                        'Lua!? Noite!? Delirando ${(clickCount)}ª vez\nAchei que fosse o calor! Mas não era! É FOME!',
+                        '◌ Lua!? Noite!? 🌙 Delirando ${(clickCount)}ª vez\nAchei que fosse o calor! Mas não era! É FOME!',
                         style: TextStyle(
                             fontSize: 13, fontWeight: FontWeight.bold),
                       )),
@@ -382,7 +382,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Easter Egg ativado!',
+                          'Easter Egg ativado!🍀',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -394,7 +394,27 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Olhos de águia!',
+                          'Olhos de águia! ☽',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+                  } else if (clickCount == 16) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          '☽ Até gostei deste tema noturno! 🌙',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+                  } else if (clickCount == 37) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Essa águia está de olho no meu lanche!\nVeja o cupom que já informei o LANCHE2024!',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -404,7 +424,7 @@ class _LoginViewState extends State<LoginView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Easter Egg ativado *2!',
+                          'Easter Egg ativado *2! 🍀',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),

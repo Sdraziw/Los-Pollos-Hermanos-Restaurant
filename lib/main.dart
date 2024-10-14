@@ -16,14 +16,14 @@ import 'package:preojeto/view/opcoes_pagamento_view.dart';
 import 'package:preojeto/view/promo_view.dart';
 import 'package:preojeto/view/promo2_view.dart';
 import 'package:preojeto/view/historico_view.dart';
-//import 'package:preojeto/view/splash_view.dart';
+import 'package:preojeto/view/splash_view.dart';
 
 import 'package:preojeto/services/message_notifier.dart';
 import 'package:preojeto/services/pedido_service.dart';
 import 'package:preojeto/widgets/aurora_animation.dart'; // Importa a animação da aurora
 
 void main() {
-  setup(); // Registrar o serviço de pedidos antes de executar o app
+  setupservice(); // Registrar o serviço de pedidos antes de executar o app
   runApp(
     //home: AuroraAnimation(), // Usa a animação da aurora como tela inicial
     DevicePreview(
@@ -58,7 +58,7 @@ class MainApp extends StatelessWidget {
         'promo2': (context) => const Promo2View(),
         'aurora': (context) => const AuroraAnimation(),
         'historico': (context) => HistoricoView(),
-        'splash': (context) => HistoricoView(),
+        'splash': (context) => SplashView(),
       },
     );
   }

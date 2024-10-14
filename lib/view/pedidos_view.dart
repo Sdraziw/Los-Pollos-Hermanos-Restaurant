@@ -13,6 +13,10 @@ class _PedidosViewState extends State<PedidosView> {
   bool incluirGorjeta = false;
   double percentualGorjeta = 10.0;
   String mensagemErro = '';
+  String codigoPromocional = '';
+  String mensagemCodigo = '';
+  bool lanche2024 = true;
+  bool sobremesa2024 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +82,38 @@ class _PedidosViewState extends State<PedidosView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Código Promocional',
+                    hintText: 'Digite o código promocional',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      codigoPromocional = value;
+                    });
+                  },
+                ),
+                if (mensagemCodigo.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      mensagemCodigo,
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    aplicarCodigoPromocional(codigoPromocional);
+                  },
+                  child: Text('Aplicar Código Promocional'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    textStyle: TextStyle(fontSize: 18),
+                    backgroundColor: Color(0xFFFFD600),
+                    foregroundColor: Colors.black,
+                  ),
+                ),
                 CheckboxListTile(
                   title: Text("Incluir gorjeta de $percentualGorjeta%"),
                   subtitle: Text("A gorjeta não é obrigatória."),
@@ -136,7 +172,7 @@ class _PedidosViewState extends State<PedidosView> {
                   onPressed: () {
                     // Atualizar o status dos pedidos para "Pago"
                     for (var prato in pedidoService.pedidos) {
-                      prato.status = "Pago"; // Atualiza o status
+                      prato.status = "Pago 💵 💰"; // Atualiza o status
                     }
                     Navigator.pushNamed(context, 'pagamento',
                         arguments: totalComGorjeta);
@@ -192,5 +228,45 @@ class _PedidosViewState extends State<PedidosView> {
         ],
       ),
     );
+  }
+
+  void aplicarCodigoPromocional(String codigo) {
+    Prato pratoGratuito;
+
+    if ((codigo == 'SOBREMESA2024') && sobremesa2024 == true) {
+      sobremesa2024 = false;
+      pratoGratuito = Prato(
+        nome: "🎃👻SOBREMESA2024 🍦- Sorvete Negresco",
+        preco: "R\$ 0,00",
+        foto: "lib/images/ice-cream.webp",
+        descricao:
+            "Sorvete Negresco é feito de leite condensado, leite, biscoitos Negresco, essência de baunilha, ovos, açúcar e creme de leite. Bem simples e delicioso! 🍦",
+        resumo: 'Casquinha Recheada e Massa Baunilha',
+      );
+      setState(() {
+        pedidoService.adicionarAoPedido(pratoGratuito); // Aqui foi corrigido
+        mensagemCodigo =
+            'Código sobremesa2024 aplicado com sucesso! Sorvete Negresco adicionado ao pedido.';
+      });
+    } else if ((codigo == 'LANCHE2024') && lanche2024 == true) {
+      lanche2024 = false;
+      pratoGratuito = Prato(
+        nome: "🎃👻LANCHE2024 🍔- Cê é LOCO cachoeira",
+        preco:
+            "R\$ 0,00", // Aqui assumimos que o combo também é gratuito com o código promocional
+        foto: "lib/images/slc que foto.jpeg",
+        descricao: "Pão de hamburguer, Frango Parrudo Empanado, Molho Barbecue",
+        resumo: 'Lanche parrudo | 200g 🍔',
+      );
+      setState(() {
+        pedidoService.adicionarAoPedido(pratoGratuito); // Aqui foi corrigido
+        mensagemCodigo =
+            'Código LANCHE2024 aplicado com sucesso! Lanche adicionado ao pedido.';
+      });
+    } else {
+      setState(() {
+        mensagemCodigo = 'Código promocional inválido.';
+      });
+    }
   }
 }

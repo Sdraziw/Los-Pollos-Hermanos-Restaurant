@@ -28,7 +28,7 @@ class Promo2View extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const Text(
-              'Você encontrou o Easter Egg x2!',
+              'Você encontrou o Easter Egg x2! 🎃👻',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,

@@ -28,7 +28,7 @@ class PromoView extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const Text(
-              'Você encontrou o Easter Egg!',
+              'Você encontrou o Easter Egg 🎃👻!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -91,7 +91,7 @@ class PromoView extends StatelessWidget {
                     ),
                     TextSpan(
                       text:
-                          'Necessário uma compra de outro item qualquer do cardápio. Apresente para um atendente junto ao número de pedido e irá ganhar o lanche extra!',
+                          'Necessário uma compra de outro item qualquer do cardápio. Apresente para um atendente junto ao número de pedido e irá ganhar 1 lanche extra!',
                     ),
                   ],
                 ),

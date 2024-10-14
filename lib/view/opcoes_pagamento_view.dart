@@ -26,10 +26,10 @@ class OpcoesPagamentoView extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                        'Pagamento via Pix confirmado!\nAguarde, seu pedido está sendo preparado!\nNúmero do pedido: $numeroPedido'),
+                        'Pagamento via Pix confirmado! 💰\nAguarde, seu pedido está sendo preparado!⌛\nNúmero do pedido: $numeroPedido'),
                   ),
                 );
-                Navigator.pushNamed(context, 'historico');
+                Navigator.pushNamed(context, 'menu');
               },
               child: Column(
                 children: [
@@ -54,7 +54,7 @@ class OpcoesPagamentoView extends StatelessWidget {
                   ),
                 );
                 // Redirecionar para a tela de opções de pagamento ou outra
-                // Navigator.pushNamed(context, 'menu'); // Descomente se necessário
+                Navigator.pushNamed(context, 'menu');
               },
               child: Column(
                 children: [

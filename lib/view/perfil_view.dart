@@ -167,7 +167,7 @@ class _PerfilViewState extends State<PerfilView> {
 
                 // Após o logout, navega para a tela de login.
                 Future.delayed(const Duration(seconds: 1), () {
-                  Navigator.pushReplacementNamed(context, 'login');
+                  Navigator.pushReplacementNamed(context, 'splash');
                 });
               },
               child: Row(
