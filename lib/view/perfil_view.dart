@@ -56,7 +56,21 @@ class _PerfilViewState extends State<PerfilView> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Remove o botão de voltar
         backgroundColor: Color(0xFFFFD600),
-        title: Text('Perfil de Usuário'),
+        title: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Perfil de Usuário'),
+                Image.network(
+                  'lib/images/heads.png',
+                  height: 40,
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(50, 40, 50, 10),
@@ -67,7 +81,7 @@ class _PerfilViewState extends State<PerfilView> {
               width: 150,
               child: ImageNetwork(
                 image:
-                    'lib/images/perfil_foto.png', // Certifique-se de que essa imagem existe
+                    'lib/images/heisenberg.jpeg', // Certifique-se de que essa imagem existe
                 height: 150,
                 width: 150,
                 borderRadius: BorderRadius.circular(100),

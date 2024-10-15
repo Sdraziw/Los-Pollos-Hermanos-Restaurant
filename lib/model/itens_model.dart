@@ -127,8 +127,6 @@ class Prato {
         descricao: "Hamburguer delicioso feito na chapa, uma fatia generosa de cheddar e molho especial",
         resumo: '500g',
       ),
-
-      //Frango grelhado com especiarias e molho picante
       Prato(
         nome: "Combo Duplo - Cê é LOCO cachoeira",
         preco: "R\$ 55,90",

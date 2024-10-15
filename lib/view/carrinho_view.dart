@@ -3,12 +3,12 @@ import 'package:get_it/get_it.dart';
 import '../services/pedido_service.dart';
 import '../model/itens_model.dart';
 
-class PedidosView extends StatefulWidget {
+class CarrinhoView extends StatefulWidget {
   @override
-  _PedidosViewState createState() => _PedidosViewState();
+  _CarrinhoViewState createState() => _CarrinhoViewState();
 }
 
-class _PedidosViewState extends State<PedidosView> {
+class _CarrinhoViewState extends State<CarrinhoView> {
   final pedidoService = GetIt.I<PedidoService>();
   bool incluirGorjeta = false;
   double percentualGorjeta = 10.0;
@@ -27,7 +27,7 @@ class _PedidosViewState extends State<PedidosView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meus Pedidos'),
+        title: Text('Meu Carrinho'),
         backgroundColor: Color(0xFFFFD600),
       ),
       body: Column(

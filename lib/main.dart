@@ -9,7 +9,7 @@ import 'package:preojeto/view/esqueci_senha_view.dart';
 import 'package:preojeto/view/login_view.dart';
 import 'package:preojeto/view/menu_view.dart';
 import 'package:preojeto/view/categoria_view.dart';
-import 'package:preojeto/view/pedidos_view.dart';
+import 'package:preojeto/view/carrinho_view.dart';
 import 'package:preojeto/view/perfil_view.dart';
 import 'package:preojeto/view/pagamento_view.dart';
 import 'package:preojeto/view/opcoes_pagamento_view.dart';
@@ -50,7 +50,7 @@ class MainApp extends StatelessWidget {
         'detalhes': (context) => const DetalhesView(),
         'categoria': (context) => const CategoriaView(),
         'esqueci_senha': (context) => EsqueciSenhaView(),
-        'pedidos': (context) => PedidosView(),
+        'carrinho': (context) => CarrinhoView(),
         'perfil': (context) => PerfilView(),
         'pagamento': (context) => PagamentoView(),
         'opcoes_pagamento': (context) => OpcoesPagamentoView(),

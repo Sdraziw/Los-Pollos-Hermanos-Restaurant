@@ -242,10 +242,10 @@ class _LoginViewState extends State<LoginView> {
                         minimumSize: const Size(300, 50),
                         backgroundColor: clickCount >= 4
                             ? primaryColor
-                            : const Color.fromARGB(255, 255, 255, 255),
+                            : const Color.fromARGB(255, 0, 0, 0),
                         foregroundColor: clickCount >= 4
                             ? const Color.fromARGB(255, 255, 255, 255)
-                            : const Color.fromARGB(255, 0, 0, 0),
+                            : const Color.fromARGB(255, 255, 255, 255),
                         textStyle: const TextStyle(fontSize: 15),
                         side: BorderSide(
                           color: clickCount >= 4

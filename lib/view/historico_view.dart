@@ -45,7 +45,16 @@ class _HistoricoViewState extends State<HistoricoView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Histórico de Pedidos'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Histórico de Pedidos'),
+            Image.network(
+              'lib/images/rv_2.png',
+              height: 90,
+            ),
+          ],
+        ),
         backgroundColor: Color(0xFFFFD600),
         automaticallyImplyLeading: false,
       ),
@@ -115,7 +124,7 @@ class _HistoricoViewState extends State<HistoricoView> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.receipt_long),
-              label: 'Pedidos'), //Utilizado Direto no Menu
+              label: 'Pedidos'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),

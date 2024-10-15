@@ -80,7 +80,6 @@ class _CadastroViewState extends State<CadastroView> {
                   },
                 ),
                 */
-                SizedBox(height: 20),
 
                 // E-mail
                 TextFormField(
@@ -211,6 +210,9 @@ class _CadastroViewState extends State<CadastroView> {
                       String email = txtEmail.text;
                       String senha = txtSenha.text;
 
+                      // Método para limpar lista de Users, 
+                      // como não estamos utilizando banco de dados, 
+                      // optamos por manter a lista mais simples.
                       Usuario.zeraLista();
 
                       // Adiciona o novo usuário ao vetor
