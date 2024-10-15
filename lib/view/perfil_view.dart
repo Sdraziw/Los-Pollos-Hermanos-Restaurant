@@ -34,12 +34,12 @@ class _PerfilViewState extends State<PerfilView> {
 
     if (index == 0) {
       // Lógica para a tela de Menu
-      Navigator.pushNamed(context, 'menu');
+      Navigator.pushReplacementNamed(context, 'menu');
     } else if (index == 1) {
       // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'historico');
+      Navigator.pushReplacementNamed(context, 'historico');
     } else if (index == 2) {
-      Navigator.pushNamed(context, 'perfil');
+      Navigator.pushReplacementNamed(context, 'perfil');
     }
   }
 
@@ -53,8 +53,13 @@ class _PerfilViewState extends State<PerfilView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove o botão de voltar
+        backgroundColor: Color(0xFFFFD600),
+        title: Text('Perfil de Usuário'),
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 80, 50, 10),
+        padding: const EdgeInsets.fromLTRB(50, 40, 50, 10),
         child: Column(
           children: [
             SizedBox(

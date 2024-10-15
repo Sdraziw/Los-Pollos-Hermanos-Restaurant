@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:preojeto/model/user_model.dart';
 import '../model/itens_model.dart';
 
 class MenuView extends StatefulWidget {
@@ -14,8 +13,9 @@ class _MenuViewState extends State<MenuView> {
   List<Prato> listaPratosPrincipais = [];
   List<Prato> listaBebidas = [];
   List<Prato> listaSobremesas = [];
-  String query = ''; // Termo de pesquisa
-  int _currentIndex = 0; // Para controlar a navegação
+  List<Prato> listaBaldes = [];
+  String query = '';
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -28,6 +28,7 @@ class _MenuViewState extends State<MenuView> {
     listaPratosPrincipais = Prato.gerarPratosPrincipais();
     listaBebidas = Prato.gerarBebidas();
     listaSobremesas = Prato.gerarSobremesas();
+    listaBaldes = Prato.gerarBaldes();
   }
 
   // Função para filtrar os itens com base na pesquisa
@@ -46,28 +47,27 @@ class _MenuViewState extends State<MenuView> {
     });
 
     if (index == 0) {
-      // Lógica para a tela de Menu
+      Navigator.pushReplacementNamed(context, 'menu');
     } else if (index == 1) {
-      // Navegar para a tela de categorias
-      Navigator.pushNamed(context, 'historico');
+      Navigator.pushReplacementNamed(context, 'historico');
     } else if (index == 2) {
-      Navigator.pushNamed(context, 'perfil');
+      Navigator.pushReplacementNamed(context, 'perfil');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Filtrar os itens com base na query de pesquisa
+    
     final entradasFiltradas = filtrarPratos(listaEntradas, query);
-    final pratosPrincipaisFiltrados =
-        filtrarPratos(listaPratosPrincipais, query);
+    final pratosPrincipaisFiltrados = filtrarPratos(listaPratosPrincipais, query);
     final bebidasFiltradas = filtrarPratos(listaBebidas, query);
     final sobremesasFiltradas = filtrarPratos(listaSobremesas, query);
+    final baldesFiltrados = filtrarPratos(listaBaldes, query);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Remove o botão de voltar
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFFFFD600),
         title: Column(
           children: [
@@ -80,16 +80,14 @@ class _MenuViewState extends State<MenuView> {
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
-                          query =
-                              value; // Atualiza a query conforme o usuário digita
+                          query = value;
                         });
                       },
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: 'Digite aqui para pesquisar...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              30.0), // Arredondar a barra de pesquisa
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
@@ -101,6 +99,7 @@ class _MenuViewState extends State<MenuView> {
                 ),
                 IconButton(
                   icon: Icon(Icons.shopping_cart, color: Colors.black),
+
                   onPressed: () {
                     // Navegar para a tela do carrinho de compras
                     Navigator.pushNamed(context, 'pedidos');
@@ -120,41 +119,33 @@ class _MenuViewState extends State<MenuView> {
             if (entradasFiltradas.isNotEmpty) ...[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Entradas',
+                child: Text('Porções',
                     style:
                         TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               ),
-              ...entradasFiltradas.map((prato) => Card(
-                    margin: EdgeInsets.all(10), // Espaçamento entre os cards
-                    elevation: 5,
+               ...entradasFiltradas.map((prato) => Card(
+                    margin: EdgeInsets.all(10),
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Raio dos cantos
-                      side: BorderSide(
-                        color: Color(0xFF757575), // Cor da borda (cinza)
-                        width: 1.0, // Largura da borda
-                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox(
-                      height: 100, // Altura do card
+                      height: 100,
                       child: ListTile(
                         leading: SizedBox(
-                          width: 100, // Largura da imagem
-                          height: 100, // Altura da imagem para preencher o card
+                          width: 100,
+                          height: 100,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                10), // Opcional: arredonda as bordas da imagem
+                            borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               prato.foto,
-                              fit: BoxFit
-                                  .cover, // Ajusta a imagem para cobrir a área
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         title: Text(prato.nome),
-                        subtitle: Text(prato.preco),
-                        trailing: Icon(Icons.play_arrow_rounded,
-                            size: 22), // Ícone modificado
+                        subtitle: Text(prato.preco, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                        trailing: Icon(Icons.play_arrow_rounded, size: 22),
                         onTap: () {
                           Navigator.pushNamed(context, 'detalhes',
                               arguments: prato);
@@ -164,46 +155,82 @@ class _MenuViewState extends State<MenuView> {
                   )),
             ],
 
-            SizedBox(height: 20),
+            SizedBox(height: 50),
+
+            // Baldes
+            if (baldesFiltrados.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Baldes de Frango',
+                    style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
+               ...baldesFiltrados.map((prato) => Card(
+                    margin: EdgeInsets.all(10),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: SizedBox(
+                      height: 100,
+                      child: ListTile(
+                        leading: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              prato.foto,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        title: Text(prato.nome),
+                        subtitle: Text(prato.preco, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                        trailing: Icon(Icons.play_arrow_rounded, size: 22),
+                        onTap: () {
+                          Navigator.pushNamed(context, 'detalhes',
+                              arguments: prato);
+                        },
+                      ),
+                    ),
+                  )),
+            ],
+
+            SizedBox(height: 50),
 
             // Pratos Principais
             if (pratosPrincipaisFiltrados.isNotEmpty) ...[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Pratos Principais',
+                child: Text('Lanches',
                     style:
                         TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               ),
               ...pratosPrincipaisFiltrados.map((prato) => Card(
                     margin: EdgeInsets.all(10),
-                    elevation: 5,
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(10), // Raio dos cantos
-                      side: BorderSide(
-                        color: Color(0xFF757575), // Cor da borda (cinza)
-                        width: 1.0, // Largura da borda
-                      ),
+                          BorderRadius.circular(10),
                     ),
                     child: SizedBox(
-                      height: 100, // Altura do card
+                      height: 100,
                       child: ListTile(
                         leading: SizedBox(
-                          width: 80, // Largura da imagem
-                          height: 80, // Altura da imagem para preencher o card
+                          width: 80,
+                          height: 80,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               prato.foto,
-                              fit: BoxFit
-                                  .cover, // Ajusta a imagem para cobrir a área
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         title: Text(prato.nome),
-                        subtitle: Text(prato.preco),
-                        trailing: Icon(Icons.play_arrow_rounded,
-                            size: 22), // Ícone modificado
+                        subtitle: Text(prato.preco, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        trailing: Icon(Icons.play_arrow_rounded, size: 22),
                         onTap: () {
                           Navigator.pushNamed(context, 'detalhes',
                               arguments: prato);
@@ -225,34 +252,27 @@ class _MenuViewState extends State<MenuView> {
               ),
               ...bebidasFiltradas.map((prato) => Card(
                     margin: EdgeInsets.all(10),
-                    elevation: 5,
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Raio dos cantos
-                      side: BorderSide(
-                        color: Color(0xFF757575), // Cor da borda (cinza)
-                        width: 1.0, // Largura da borda
-                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox(
-                      height: 100, // Altura do card
+                      height: 100,
                       child: ListTile(
                         leading: SizedBox(
-                          width: 80, // Largura da imagem
-                          height: 80, // Altura da imagem para preencher o card
+                          width: 80,
+                          height: 80,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               prato.foto,
-                              fit: BoxFit
-                                  .cover, // Ajusta a imagem para cobrir a área
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         title: Text(prato.nome),
-                        subtitle: Text(prato.preco),
-                        trailing: Icon(Icons.play_arrow_rounded,
-                            size: 22), // Ícone modificado
+                        subtitle: Text(prato.preco, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        trailing: Icon(Icons.play_arrow_rounded, size: 22),
                         onTap: () {
                           Navigator.pushNamed(context, 'detalhes',
                               arguments: prato);
@@ -274,34 +294,28 @@ class _MenuViewState extends State<MenuView> {
               ),
               ...sobremesasFiltradas.map((prato) => Card(
                     margin: EdgeInsets.all(10),
-                    elevation: 5,
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(10), // Raio dos cantos
-                      side: BorderSide(
-                        color: Color(0xFF757575), // Cor da borda (cinza)
-                        width: 1.0, // Largura da borda
-                      ),
+                          BorderRadius.circular(10),
                     ),
                     child: SizedBox(
-                      height: 100, // Altura do card
+                      height: 100,
                       child: ListTile(
                         leading: SizedBox(
-                          width: 80, // Largura da imagem
-                          height: 80, // Altura da imagem para preencher o card
+                          width: 80,
+                          height: 80,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               prato.foto,
-                              fit: BoxFit
-                                  .cover, // Ajusta a imagem para cobrir a área
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         title: Text(prato.nome),
-                        subtitle: Text(prato.preco),
-                        trailing: Icon(Icons.play_arrow_rounded,
-                            size: 22), // Ícone modificado
+                        subtitle: Text(prato.preco, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        trailing: Icon(Icons.play_arrow_rounded, size: 22),
                         onTap: () {
                           Navigator.pushNamed(context, 'detalhes',
                               arguments: prato);
@@ -322,31 +336,10 @@ class _MenuViewState extends State<MenuView> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.receipt_long),
-              label: 'Pedidos'), //Utilizado Direto no Menu
+              label: 'Pedidos'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Adiciona lógica de logout aqui, como limpar o estado de autenticação ou sessão do usuário.
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content:
-                  Text('Deslogando...\nDirecionado para a página de Login!'),
-            ),
-          );
-
-          // Após o logout, navega para a tela de login.
-          Future.delayed(Duration(seconds: 1), () {
-            Navigator.pushReplacementNamed(context, 'login');
-          });
-        },
-        child: Icon(Icons.logout), // Ícone de logout
-        backgroundColor: Colors.red, // Cor do botão de logout
-      ),
-
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.endDocked, // Localização do botão*/
     );
   }
 }

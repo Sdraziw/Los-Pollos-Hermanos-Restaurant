@@ -185,6 +185,7 @@ class _PedidosViewState extends State<PedidosView> {
                     foregroundColor: Colors.black,
                   ),
                 ),
+                SizedBox(height: 50),
               ],
             ),
           ),

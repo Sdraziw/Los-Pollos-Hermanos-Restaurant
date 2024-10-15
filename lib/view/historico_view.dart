@@ -8,6 +8,23 @@ class HistoricoView extends StatefulWidget {
 
 class _HistoricoViewState extends State<HistoricoView> {
   List<String> historico = [];
+  int _currentIndex = 1;
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    if (index == 0) {
+      // Lógica para a tela de Menu
+      Navigator.pushReplacementNamed(context, 'menu');
+    } else if (index == 1) {
+      // Navegar para a tela de categorias
+      Navigator.pushReplacementNamed(context, 'historico');
+    } else if (index == 2) {
+      Navigator.pushReplacementNamed(context, 'perfil');
+    }
+  }
 
   @override
   void initState() {
@@ -30,6 +47,7 @@ class _HistoricoViewState extends State<HistoricoView> {
       appBar: AppBar(
         title: Text('Histórico de Pedidos'),
         backgroundColor: Color(0xFFFFD600),
+        automaticallyImplyLeading: false,
       ),
       body: historico.isEmpty
           ? Center(
@@ -87,6 +105,20 @@ class _HistoricoViewState extends State<HistoricoView> {
                 );
               },
             ),
+
+            bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Colors.black,
+        backgroundColor: Color(0xFFFFD600),
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long),
+              label: 'Pedidos'), //Utilizado Direto no Menu
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        ],
+      ),
     );
   }
 }

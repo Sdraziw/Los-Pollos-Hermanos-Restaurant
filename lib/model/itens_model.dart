@@ -56,13 +56,27 @@ class Prato {
       ),
       Prato(
         nome: "Batata Frita G",
-        preco: "R\$ 15,50",
-        foto: "lib/images/french fries.png",
-        descricao: "Batatas fritas crocantes e temperadas",
-        resumo: '14 pedaços | 400g',
+        preco: "R\$ 10,90",
+        foto: "lib/images/french fries (2).png",
+        descricao: "Batatas fritas, crocantes e temperadas",
+        resumo: '200g',
       ),
       Prato(
-        nome: "Combo Onions & Batato Frango Fritas",
+        nome: "Batata Frita M",
+        preco: "R\$ 8,90",
+        foto: "lib/images/french fries (2).png",
+        descricao: "Batatas fritas, crocantes e temperadas",
+        resumo: '150g',
+      ),
+      Prato(
+        nome: "Batata Frita P",
+        preco: "R\$ 7,90",
+        foto: "lib/images/french fries (2).png",
+        descricao: "Batatas fritas, crocantes e temperadas",
+        resumo: '100g',
+      ),
+      Prato(
+        nome: "Combo Onions & Fritas",
         preco: "R\$ 35,50",
         foto: "lib/images/onions_batatas.png",
         descricao:
@@ -79,33 +93,75 @@ class Prato {
   static List<Prato> gerarPratosPrincipais() {
     return [
       Prato(
-        nome: 'Balde de Frango G',
-        preco: 'R\$ 15,50',
-        foto: 'lib/images/frango_balde.jpeg',
-        descricao: 'Frango marinado em especiarias, frito até a perfeição',
-        resumo: '14 pedaços | 400g',
-      ),
-      Prato(
-        nome: 'X - White',
-        preco: 'R\$ 15,50',
-        foto: 'lib/images/frango_white.jfif',
-        descricao: 'Peito de frango empanado, com queijo e molho especial',
-        resumo: '14 pedaços | 400g',
+        nome: 'X - Walter White',
+        preco: 'R\$ 25,50',
+        foto: 'lib/images/burguer.png',
+        descricao: 'Peito de frango empanado com queijo, tiras de bacon e molho especial',
+        resumo: '400g',
       ),
       Prato(
         nome: "X - Heisenberg",
-        preco: "R\$ 13,50",
-        foto: "lib/images/los-polos-hermanos14.png",
-        descricao: "Frango grelhado com especiarias e molho picante",
-        resumo: '12 pedaços | 350g',
+        preco: "R\$ 45,50",
+        foto: "lib/images/hamburger.png",
+        descricao: "Dois hamburgueres com muito cheddar, tiras de bacon e molho picante",
+        resumo: '500g',
       ),
       Prato(
+        nome: "X - Hank Schrader",
+        preco: "R\$ 32,50",
+        foto: "lib/images/hankburger.png",
+        descricao: "Hamburguer saboroso de gnu, uma fatia semi-derretida de cheddar, anéis de cebola, fatias de picles, salada refrescante de alface e tomate, maionese e molho especial",
+        resumo: '500g',
+      ),
+      Prato(
+        nome: "X - Gus Fring",
+        preco: "R\$ 25,50",
+        foto: "lib/images/xsalada.png",
+        descricao: "Hamburguer suculento dos pampas, uma fatia de muçarela e uma salada refrescante de alface e tomate",
+        resumo: '500g',
+      ),
+      Prato(
+        nome: "X - Jesse Pinkman",
+        preco: "R\$ 15,50",
+        foto: "lib/images/jesseburger.png",
+        descricao: "Hamburguer delicioso feito na chapa, uma fatia generosa de cheddar e molho especial",
+        resumo: '500g',
+      ),
+
+      //Frango grelhado com especiarias e molho picante
+      Prato(
         nome: "Combo Duplo - Cê é LOCO cachoeira",
-        preco: "R\$ 15,90",
+        preco: "R\$ 55,90",
         foto: "lib/images/slc que foto.jpeg",
         descricao:
             "2 Pães de hamburguer, 2 X Frango Parrudo Empanado, Molho Barbecue",
         resumo: '2 lanches parrudo | 200g cada',
+      ),
+    ];
+  }
+
+  static List<Prato> gerarBaldes() {
+    return [
+      Prato(
+        nome: 'Balde de Frango G',
+        preco: 'R\$ 19,50',
+        foto: 'lib/images/balde G.png',
+        descricao: 'Frango marinado em especiarias, frito até a perfeição',
+        resumo: '14 pedaços | 600g',
+      ),
+      Prato(
+        nome: 'Balde de Frango M',
+        preco: 'R\$ 17,50',
+        foto: 'lib/images/balde G.png',
+        descricao: 'Frango marinado em especiarias, frito até a perfeição',
+        resumo: '12 pedaços | 500g',
+      ),
+      Prato(
+        nome: 'Balde de Frango P',
+        preco: 'R\$ 15,50',
+        foto: 'lib/images/balde G.png',
+        descricao: 'Frango marinado em especiarias, frito até a perfeição',
+        resumo: '10 pedaços | 400g',
       ),
     ];
   }
@@ -117,21 +173,21 @@ class Prato {
     return [
       Prato(
         nome: "Refrigerante Soda",
-        preco: "R\$ 5,00",
-        foto: "lib/images/soda.jpg",
-        descricao: "Refrigerante Soda 350ml gelado para acompanhar seu prato",
-        resumo: '350ml',
+        preco: "R\$ 10,90",
+        foto: "lib/images/refri G.png",
+        descricao: "Refrigerante Soda 500ml gelado para acompanhar seu prato",
+        resumo: '500ml',
       ),
       Prato(
         nome: "Refrigerante Coca",
-        preco: "R\$ 5,00",
+        preco: "R\$ 12,90",
         foto: "lib/images/coke.png",
-        descricao: "Refrigerante Coca 350ml gelado para acompanhar seu prato",
-        resumo: '350ml',
+        descricao: "Refrigerante Coca 500ml gelado para acompanhar seu prato",
+        resumo: '500ml',
       ),
       Prato(
         nome: "Refrigerante Schweppes",
-        preco: "R\$ 8,50",
+        preco: "R\$ 9,50",
         foto: "lib/images/Schweppes.png",
         descricao:
             "Refrigerante Schweppes 1500ml gelado para acompanhar seu pedido",
@@ -153,7 +209,7 @@ class Prato {
       ),
       Prato(
         nome: "Suco Dell Valle",
-        preco: "R\$ 5,50",
+        preco: "R\$ 7,50",
         foto: "lib/images/suco_delvale.png",
         descricao: "Suco natural de frutas, refrescante e saudável",
         resumo: '350ml',
