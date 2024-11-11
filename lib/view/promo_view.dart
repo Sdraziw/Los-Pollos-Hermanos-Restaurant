@@ -83,7 +83,7 @@ class PromoView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text:
-                          'LANCHE2024\n\n', // Texto da promoção com cor diferente
+                          'CUPOM: LANCHE2024\n\n', // Texto da promoção com cor diferente
                       style: TextStyle(
                         color: Colors.red, // Cor específica para "PROMO2024"
                         fontWeight: FontWeight.bold,
