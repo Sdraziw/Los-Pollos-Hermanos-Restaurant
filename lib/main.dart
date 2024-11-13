@@ -1,6 +1,6 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';  // Importa o firebase_core.dart
+import 'package:flutter/material.dart'; // Importa o material.dart
 import 'package:preojeto/firebase_options.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart'; // Certifique-se de importar o provider
@@ -24,7 +24,11 @@ import 'package:preojeto/services/message_notifier.dart';
 import 'package:preojeto/services/pedido_service.dart';
 import 'package:preojeto/widgets/aurora_animation.dart'; // Importa a animação da aurora
 
+  //
+  // INICIALIZAR O FIREBASE
+  //
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -32,6 +36,7 @@ Future<void> main() async {
   runApp(
     //home: AuroraAnimation(), // Usa a animação da aurora como tela inicial
     DevicePreview(
+      enabled: true,// Habilita o DevicePreview
       builder: (context) => ChangeNotifierProvider(
         create: (context) => MessageNotifier(),
         child: const MainApp(),

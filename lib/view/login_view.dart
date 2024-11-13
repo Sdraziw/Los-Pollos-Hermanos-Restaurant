@@ -4,12 +4,12 @@
 ●	O botão "Entrar" aciona o login, e "Cadastrar" navega para o cadastro de usuário.
 ●	O logout redireciona para a tela de login, descartando dados.
 */
+
 import 'package:flutter/material.dart';
-import 'package:preojeto/controller/login_controller.dart';
-import 'package:preojeto/model/user_model.dart'; // Importa a classe Usuario
-import 'package:preojeto/services/pedido_service.dart'; // Importa o PedidoService
-import 'package:shared_preferences/shared_preferences.dart'; // Para salvar localmente o estado de "Lembre-se de mim"
-import 'dart:math'; // Para gerar cores aleatórias
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Auth
+
+import 'package:shared_preferences/shared_preferences.dart'; // Preferências locais
+import 'dart:math'; // Para gerar cores aleatórias (não utilizado)
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -20,22 +20,20 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final formKey = GlobalKey<FormState>();
-  Color backgroundColor = const Color(0xFFFFD600);
-  final primaryColor = const Color.fromARGB(255, 0, 0, 0);
 
-  final txtValor1 = TextEditingController();
-  final txtValor2 = TextEditingController();
   final txtEmail = TextEditingController();
   final txtSenha = TextEditingController();
 
   bool _rememberMe = false;
   bool _obscureText = true;
   int clickCount = 0;
+  Color backgroundColor = const Color(0xFFFFD600);
+  final primaryColor = const Color.fromARGB(255, 0, 0, 0);
 
   @override
   void initState() {
     super.initState();
-    _loadRememberMe(); // Carrega o estado de "Lembre-se de mim"
+    _loadRememberMe();
   }
 
   // Função para carregar o estado de "Lembre-se de mim" e credenciais
@@ -44,8 +42,8 @@ class _LoginViewState extends State<LoginView> {
     setState(() {
       _rememberMe = prefs.getBool('rememberMe') ?? false;
       if (_rememberMe) {
-        txtValor1.text = prefs.getString('email') ?? '';
-        txtValor2.text = prefs.getString('senha') ?? '';
+        txtEmail.text = prefs.getString('email') ?? '';
+        txtSenha.text = prefs.getString('senha') ?? '';
       }
     });
   }
@@ -55,8 +53,8 @@ class _LoginViewState extends State<LoginView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('rememberMe', _rememberMe);
     if (_rememberMe) {
-      prefs.setString('email', txtValor1.text);
-      prefs.setString('senha', txtValor2.text);
+      prefs.setString('email', txtEmail.text);
+      prefs.setString('senha', txtSenha.text);
     } else {
       prefs.remove('email');
       prefs.remove('senha');
@@ -74,8 +72,65 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  // Função de Login com Firebase Auth
+  Future<void> _login() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: txtEmail.text,
+          password: txtSenha.text,
+        );
+        _saveRememberMe();
+        Navigator.pushNamed(context, 'menu');
+        _showMessage('Login realizado com sucesso', Colors.greenAccent);
+      } catch (e) {
+        _showMessage('Erro no login: $e', Colors.redAccent);
+      }
+    }
+  }
+
+  // Função de Cadastro com Firebase Auth
+  Future<void> _register() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: txtEmail.text,
+          password: txtSenha.text,
+        );
+        _saveRememberMe();
+        Navigator.pushNamed(context, 'menu');
+        _showMessage('Conta criada com sucesso', Colors.greenAccent);
+      } catch (e) {
+        _showMessage('Erro ao criar conta: $e', Colors.redAccent);
+      }
+    }
+  }
+
+  // Função de Logout
+  Future<void> _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+    } catch (e) {
+      _showMessage('Erro ao sair: $e', Colors.redAccent);
+    }
+  }
+
+  // Exibir mensagem com SnackBar
+  void _showMessage(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Alteração do método build
+    clickCount++; // Incrementa o contador de cliques para alterar a imagem
+
     String desertImage = (clickCount >= 4 && clickCount < 10)
         ? "lib/images/deserto1.png"
         : (clickCount >= 38)
@@ -118,8 +173,10 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     const SizedBox(height: 5),
+
+                    // Campo de E-mail
                     TextFormField(
-                      controller: txtValor1,
+                      controller: txtEmail,
                       style: TextStyle(
                         fontSize: 18,
                         color: clickCount >= 4 ? Colors.white : Colors.black,
@@ -128,7 +185,7 @@ class _LoginViewState extends State<LoginView> {
                         filled: true,
                         fillColor:
                             clickCount >= 4 ? Colors.black54 : Colors.white,
-                        labelText: 'E-mail ou nome completo',
+                        labelText: 'E-mail',
                         labelStyle: TextStyle(
                           color: clickCount >= 4 ? Colors.white : Colors.black,
                         ),
@@ -142,20 +199,20 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor, insira seu e-mail ou usuário';
+                          return 'Por favor, insira seu e-mail';
                         } else if (!RegExp(
-                                    r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value) &&
-                            !Usuario.usuarios
-                                .any((user) => user.nome == value)) {
-                          return 'Formato de e-mail ou usuário inválido';
+                                r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return 'Formato de e-mail inválido';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 10),
+
+                    // Campo de Senha
                     TextFormField(
-                      controller: txtValor2,
+                      controller: txtSenha,
                       style: TextStyle(
                         fontSize: 18,
                         color: clickCount >= 4 ? Colors.white : Colors.black,
@@ -201,6 +258,8 @@ class _LoginViewState extends State<LoginView> {
                       },
                     ),
                     const SizedBox(height: 10),
+
+                    // Checkbox "Lembre de mim"
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -210,6 +269,68 @@ class _LoginViewState extends State<LoginView> {
                             setState(() {
                               _rememberMe = value!;
                             });
+                            _saveRememberMe();
+                          },
+                          activeColor: Colors.blue,
+                          checkColor: Colors.white,
+                        ),
+                        Text(
+                          'Lembre de mim',
+                          style: TextStyle(
+                              color: clickCount >= 4
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        const SizedBox(width: 30),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'esqueci_senha');
+                          },
+                          child: Text(
+                            "Esqueci a senha",
+                            style: TextStyle(
+                              fontSize: 13,
+                              color:
+                                  clickCount >= 4 ? Colors.white : Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Botão de Login
+                    ElevatedButton(
+                      onPressed: _login,
+                       style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(300, 50),
+                        backgroundColor: clickCount >= 4
+                            ? primaryColor
+                            : const Color.fromARGB(255, 0, 0, 0),
+                        foregroundColor: clickCount >= 4
+                            ? const Color.fromARGB(255, 255, 255, 255)
+                            : const Color.fromARGB(255, 255, 255, 255),
+                        textStyle: const TextStyle(fontSize: 15),
+                        side: BorderSide(
+                          color: clickCount >= 4
+                              ? Colors.white
+                              : const Color.fromARGB(255, 0, 0, 0),
+                          width: 2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          String emailOuUsuario = txtValor1.text;
+                          String senha = txtValor2.text;
+
+                          // Lógica de login
+                          if (((emailOuUsuario == 'admin@email.com') ||
+                                  (emailOuUsuario == 'teste@teste.com')) &&
+                              senha == '123456') {
                             _saveRememberMe(); // Salva o estado do checkbox
                           },
                           activeColor: Colors.blue,
@@ -240,6 +361,8 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     const SizedBox(height: 40),
+
+									  
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 50),
@@ -262,8 +385,8 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          String emailOuUsuario = txtValor1.text;
-                          String senha = txtValor2.text;
+                          String emailOuUsuario = txtEmail.text; // Corrigir o nome da variável para txtEmail
+                          String senha = txtSenha.text; // Corrigir o nome da variável para txtSenha
 
                           // Lógica de login
                           if (((emailOuUsuario == 'admin@email.com') ||
@@ -272,19 +395,19 @@ class _LoginViewState extends State<LoginView> {
                             _saveRememberMe(); // Salva as credenciais
                             Navigator.pushNamed(context, 'menu');
                           } else {
-                            Usuario? usuario = Usuario.usuarios.firstWhere(
+                            usuario? usuario = usuario.usuarios.firstWhere( // Corrigir o nome da variável para usuario e adicionar o ponto de interrogação para permitir valores nulos (null safety)
                               (user) =>
                                   (user.email == emailOuUsuario ||
                                       user.nome == emailOuUsuario) &&
                                   user.senha == senha,
                               orElse: () =>
-                                  Usuario(nome: '', email: '', senha: ''),
+                                  usuario(nome: '', email: '', senha: ''),  // Corrigir o nome da variável para usuario e adicionar o ponto de interrogação para permitir valores nulos (null safety)
                             );
 
                             if (usuario.nome.isNotEmpty) {
                               // Gerar número do pedido
                               String numeroPedido =
-                                  await PedidoService().gerarNumeroPedido();
+                                  await PedidoService().gerarNumeroPedido(); // Corrigir o nome da classe para PedidoService e adicionar os parênteses para chamar o construtor da classe (null safety)
 
                               // Passar nome e número do pedido para a tela de pagamento
                               Navigator.pushNamed(
@@ -297,7 +420,7 @@ class _LoginViewState extends State<LoginView> {
                               );
                               _saveRememberMe(); // Salva as credenciais
                             } else {
-                              LoginController().login(
+                              LoginController().login(  // Corrigir o nome da classe para LoginController e adicionar os parênteses para chamar o construtor da classe (null safety)
                                 context,
                                 txtEmail.text,
                                 txtSenha.text,
