@@ -110,3 +110,17 @@ class LoginController {
     return nome;
   }
 }
+
+class Usuario {
+  String nome;
+  String email;
+  String senha;
+
+  Usuario({required this.nome, required this.email, required this.senha});
+}
+
+List<Usuario> usuarios = [
+  Usuario(nome: 'Admin', email: 'admin@email.com', senha: '123456'),
+  Usuario(nome: 'Teste', email: 'teste@teste.com', senha: '123456'),
+  // Adicione outros usuários conforme necessário
+];

@@ -34,3 +34,4 @@ flutter:
     - lib/images/
     - lib/videos/
     - lib/audios/
+    - lib/fonts/

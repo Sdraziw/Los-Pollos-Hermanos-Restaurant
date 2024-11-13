@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:preojeto/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroView extends StatefulWidget {
   const CadastroView({super.key});
@@ -15,11 +17,55 @@ class _CadastroViewState extends State<CadastroView> {
   bool _obscureText2 = true;
 
   final txtNome = TextEditingController();
-  final txtUsuario = TextEditingController();
   final txtEmail = TextEditingController();
   final txtConfirmaEmail = TextEditingController();
   final txtSenha = TextEditingController();
   final txtConfirmaSenha = TextEditingController();
+
+  // Função para salvar o estado de "Lembre-se de mim" e credenciais
+  void _saveRememberMe() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('rememberMe', true);
+    prefs.setString('email', txtEmail.text);
+    prefs.setString('senha', txtSenha.text);
+  }
+
+  // Função de Cadastro com Firebase Auth
+  Future<void> _register() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: txtEmail.text,
+          password: txtSenha.text,
+        );
+
+        // Salvar nome do usuário no Firestore
+        await FirebaseFirestore.instance.collection('usuarios').doc(userCredential.user!.uid).set({
+          'nome': txtNome.text,
+          'email': txtEmail.text,
+        });
+
+        _saveRememberMe();
+        Navigator.pushNamed(context, 'menu');
+        _showMessage('Conta criada com sucesso', Colors.greenAccent);
+      } catch (e) {
+        _showMessage('Erro ao criar conta: $e', Colors.redAccent);
+      }
+    }
+  }
+
+  // Exibir mensagem com SnackBar
+  void _showMessage(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: color,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,208 +76,101 @@ class _CadastroViewState extends State<CadastroView> {
         title: Text('Cadastro de Usuário'), // Título da tela
       ),
       body: Container(
-        color: const Color(0xFFFFD600),
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(50, 60, 50, 60),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Nome Completo
-                TextFormField(
-                  controller: txtNome,
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Nome Completo',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: txtNome,
+                decoration: InputDecoration(labelText: 'Nome'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira seu nome';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: txtEmail,
+                decoration: InputDecoration(labelText: 'E-mail'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira seu e-mail';
+                  } else if (!RegExp(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                    return 'Formato de e-mail inválido';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: txtConfirmaEmail,
+                decoration: InputDecoration(labelText: 'Confirme seu E-mail'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, confirme seu e-mail';
+                  } else if (value != txtEmail.text) {
+                    return 'Os e-mails não coincidem';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: txtSenha,
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe seu nome completo';
-                    }
-                    return null;
-                  },
                 ),
-                SizedBox(height: 20),
-
-                // Usuário
-                /*
-                TextFormField(
-                  controller: txtUsuario,
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Usuário',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira sua senha';
+                  } else if (value.length < 6) {
+                    return 'A senha deve ter pelo menos 6 caracteres';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: txtConfirmaSenha,
+                obscureText: _obscureText2,
+                decoration: InputDecoration(
+                  labelText: 'Confirme sua Senha',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText2 ? Icons.visibility_off : Icons.visibility,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText2 = !_obscureText2;
+                      });
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe seu usuário';
-                    }
-                    return null;
-                  },
                 ),
-                */
-
-                // E-mail
-                TextFormField(
-                    controller: txtEmail,
-                    style: const TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'E-mail',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe seu e-mail';
-                      } else if (!RegExp(
-                              r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return 'Formato de e-mail inválido';
-                      }
-                      return null;
-                    }),
-                SizedBox(height: 20),
-
-                // Confirmar e-mail
-                TextFormField(
-                  controller: txtConfirmaEmail,
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Confirmar e-mail',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value != txtEmail.text) {
-                      return 'Os e-mails não correspondem';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-
-                // Senha
-                TextFormField(
-                  controller: txtSenha,
-                  style: const TextStyle(fontSize: 18),
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Senha',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, insira sua senha';
-                    } else if (value.length < 6) {
-                      return 'A senha precisa ter pelo menos 6 caracteres';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-
-                // Confirmar Senha
-                TextFormField(
-                  controller: txtConfirmaSenha,
-                  style: const TextStyle(fontSize: 18),
-                  obscureText: _obscureText2,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Confirmar Senha',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText2 ? Icons.visibility_off : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText2 = !_obscureText2;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value != txtSenha.text) {
-                      return 'As senhas não correspondem';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 50),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(300, 50),
-                    backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                    foregroundColor: Colors.white,
-                    textStyle: const TextStyle(fontSize: 15),
-                  ), // Dentro do método onPressed do botão de cadastrar em CadastroView
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      // Se o formulário for válido, adiciona o usuário
-                      String nome = txtNome.text;
-                      String email = txtEmail.text;
-                      String senha = txtSenha.text;
-
-                      // Método para limpar lista de Users, 
-                      // como não estamos utilizando banco de dados, 
-                      // optamos por manter a lista mais simples.
-                      Usuario.zeraLista();
-
-                      // Adiciona o novo usuário ao vetor
-                      Usuario.adicionarUser(nome, email, senha);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              'Cadastro efetuado com sucesso!\nNome: $nome\nE-mail: $email!'),
-                        ),
-                      );
-                      // Navegar para a tela de menu
-                      Navigator.pushNamed(context, 'login');
-                    }
-                  },
-
-                  child: Text('Cadastrar'),
-                ),
-              ],
-            ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, confirme sua senha';
+                  } else if (value != txtSenha.text) {
+                    return 'As senhas não coincidem';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _register,
+                child: Text('Cadastrar'),
+              ),
+            ],
           ),
         ),
       ),

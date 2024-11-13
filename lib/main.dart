@@ -19,14 +19,14 @@ import 'package:preojeto/view/promo_view.dart';
 import 'package:preojeto/view/promo2_view.dart';
 import 'package:preojeto/view/historico_view.dart';
 import 'package:preojeto/view/splash_view.dart';
-
 import 'package:preojeto/services/message_notifier.dart';
 import 'package:preojeto/services/pedido_service.dart';
 import 'package:preojeto/widgets/aurora_animation.dart'; // Importa a animação da aurora
+import 'firebase_options.dart'; // Certifique-se de ter o arquivo firebase_options.dart gerado pelo Firebase CLI
 
-  //
-  // INICIALIZAR O FIREBASE
-  //
+//
+// INICIALIZAR O FIREBASE
+//
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -36,7 +36,7 @@ Future<void> main() async {
   runApp(
     //home: AuroraAnimation(), // Usa a animação da aurora como tela inicial
     DevicePreview(
-      enabled: true,// Habilita o DevicePreview
+      enabled: true, // Habilita o DevicePreview
       builder: (context) => ChangeNotifierProvider(
         create: (context) => MessageNotifier(),
         child: const MainApp(),
@@ -51,8 +51,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: 'login',
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: SplashView(), // Defina a tela inicial do seu aplicativo
       routes: {
         'login': (context) => const LoginView(),
         'cadastro': (context) => const CadastroView(),
