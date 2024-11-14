@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'components/text_field.dart';
 
 class CadastroView extends StatefulWidget {
   const CadastroView({super.key});
@@ -62,7 +66,7 @@ class _CadastroViewState extends State<CadastroView> {
           message,
           style: TextStyle(fontSize: 16),
         ),
-        backgroundColor: color,
+        backgroundColor: color,successfully
       ),
     );
   }
@@ -70,30 +74,21 @@ class _CadastroViewState extends State<CadastroView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFD600),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFD600),
-        title: Text('Cadastro de Usuário'), // Título da tela
-      ),
-      body: Container(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
         child: Form(
           key: formKey,
-          child: ListView(
+          child: Column(
             children: [
-              TextFormField(
-                controller: txtNome,
-                decoration: InputDecoration(labelText: 'Nome'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira seu nome';
-                  }
-                  return null;
-                },
+              Text(
+                'Criar Conta',
+                style: TextStyle(fontSize: 60),
               ),
+              SizedBox(height: 60),
+              campoTexto('Nome', txtNome, Icons.person),
               TextFormField(
                 controller: txtEmail,
-                decoration: InputDecoration(labelText: 'E-mail'),
+                decoration: InputDecoration(labelText: 'E-mail', prefixIcon: Icon(Icons.email)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira seu e-mail';
@@ -105,7 +100,7 @@ class _CadastroViewState extends State<CadastroView> {
               ),
               TextFormField(
                 controller: txtConfirmaEmail,
-                decoration: InputDecoration(labelText: 'Confirme seu E-mail'),
+                decoration: InputDecoration(labelText: 'Confirme seu E-mail', prefixIcon: Icon(Icons.email)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, confirme seu e-mail';

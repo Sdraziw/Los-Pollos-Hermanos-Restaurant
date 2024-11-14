@@ -3,13 +3,13 @@ import 'package:video_player/video_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class SplashView extends StatefulWidget {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
 
   @override
-  _SplashViewState createState() => _SplashViewState();
+  SplashViewState createState() => SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class SplashViewState extends State<SplashView> {
   late VideoPlayerController _videoController;
   late AudioPlayer _audioPlayer;
 
@@ -22,33 +22,56 @@ class _SplashViewState extends State<SplashView> {
     // Inicia a configuração do áudio
     _iniciarAudio();
 
-    // Navega para a próxima tela após a reprodução do vídeo
+    /*// Navega para a próxima tela após a reprodução do vídeo
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
         Navigator.pushReplacementNamed(context, 'login');
       }
     });
+  }*/
+
+  
+    // Navega para a próxima tela após 5 segundos
+    Future.delayed(const Duration(seconds: 5), () {
+      if (_videoController.value.isInitialized && mounted) {
+        Navigator.pushNamed(context, 'login');
+      }
+    });
   }
 
-  // Função para iniciar o vídeo
-  void _iniciarVideo() {
+  /// Método para inicializar e configurar o vídeo
+  Future<void> _iniciarVideo() async {
     _videoController = VideoPlayerController.asset('lib/videos/coke.mp4')
       ..initialize().then((_) {
-        setState(() {});
+        setState(() {}); // Atualiza o estado para reconstruir a tela
         _videoController.play();
+        _videoController.setLooping(true); // Repetir vídeo em loop
+      }).catchError((error) {
+        debugPrint('Erro ao carregar vídeo: $error');
       });
   }
 
-  // Função para iniciar o áudio
-  void _iniciarAudio() {
+  /// Método para inicializar e configurar o áudio
+  Future<void> _iniciarAudio() async {
     _audioPlayer = AudioPlayer();
-    _audioPlayer.play(AssetSource('lib/audios/breaking_bad.mp3')); // Corrigido para usar AssetSource
+    try {
+      // Carrega o áudio do asset
+      await _audioPlayer.setSource(AssetSource('lib/audios/breaking_bad.mp3'));
+
+      // Define o modo de liberação para repetir o áudio em loop
+      await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+      // Inicia a reprodução
+      await _audioPlayer.resume();
+    } catch (error) {
+      debugPrint('Erro ao carregar áudio: $error');
+    }
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
-    _audioPlayer.dispose();
+    _videoController.dispose(); // Libera o controlador de vídeo
+    _audioPlayer.dispose(); // Libera o controlador de áudio
     super.dispose();
   }
 

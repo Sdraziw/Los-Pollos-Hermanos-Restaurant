@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';  // Importa o firebase_core.d
 import 'package:flutter/material.dart'; // Importa o material.dart
 import 'package:preojeto/firebase_options.dart';
 //import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart'; // Certifique-se de importar o provider
+import 'package:provider/provider.dart'; 
 
 import 'package:preojeto/view/cadastro_view.dart';
 import 'package:preojeto/view/detalhes_view.dart';
@@ -22,7 +22,7 @@ import 'package:preojeto/view/splash_view.dart';
 import 'package:preojeto/services/message_notifier.dart';
 import 'package:preojeto/services/pedido_service.dart';
 import 'package:preojeto/widgets/aurora_animation.dart'; // Importa a animação da aurora
-import 'firebase_options.dart'; // Certifique-se de ter o arquivo firebase_options.dart gerado pelo Firebase CLI
+
 
 //
 // INICIALIZAR O FIREBASE
@@ -51,11 +51,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Restaurant App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashView(), // Defina a tela inicial do seu aplicativo
+      home: LoginView(),// Defina a tela inicial do seu aplicativo
       routes: {
         'login': (context) => const LoginView(),
         'cadastro': (context) => const CadastroView(),

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-Widget campoTexto(label, controller, icone, {senha}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 15),
-    child: TextField(
-      controller: controller,
-      obscureText: (senha!=null) ? senha : false,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icone),
-        border: const OutlineInputBorder(),
-      ),
+Widget campoTexto(String label, TextEditingController controller, IconData icon, {bool senha = false}) {
+  return TextFormField(
+    controller: controller,
+    obscureText: senha,
+    decoration: InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(),
     ),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Por favor, insira $label';
+      }
+      return null;
+    },
   );
 }

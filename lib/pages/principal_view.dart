@@ -183,6 +183,17 @@ class _PrincipalViewState extends State<PrincipalView> {
     );
   }
 
+  Widget campoTexto(String label, TextEditingController controller, IconData icon) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
   limparCampos() {
     txtTitulo.clear();
     txtDescricao.clear();
